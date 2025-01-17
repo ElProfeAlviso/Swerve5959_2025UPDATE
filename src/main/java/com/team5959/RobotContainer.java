@@ -28,6 +28,7 @@ public class RobotContainer {
   private final JoystickButton resetPosButton = new JoystickButton(control, 9);
 
   //AXIS 
+  @SuppressWarnings("unused")
   private final int joystickAxis = PS4Controller.Axis.kRightY.value;
 
 

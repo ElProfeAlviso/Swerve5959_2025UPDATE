@@ -1,5 +1,5 @@
 package com.team5959.subsystems;
-//import com.kauailabs.navx.frc.AHRS;
+
 import com.studica.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -61,7 +61,7 @@ public class SwerveChassis extends SubsystemBase{
     return odometer.getPoseMeters();
   }
 
-  // FIXME i dont think this works as intended,, resetPosition should reset everything to 0 
+  //i dont think this works as intended,, resetPosition should reset everything to 0 
   public void setPose(Pose2d pose) {
     odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
   }

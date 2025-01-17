@@ -1,18 +1,18 @@
 package com.team5959.subsystems;
 
-//import com.revrobotics.CANSparkMax;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-//import com.revrobotics.CANSparkBase.IdleMode;
+
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-//import com.revrobotics.spark.config.SparkBaseConfig;
 
-//import com.revrobotics.spark.config.EncoderConfig;
 
-//import com.revrobotics.CANSparkLowLevel.MotorType;
+
+
+
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.team5959.SwerveModuleConstants;
 import com.team5959.Constants.SwerveConstants;
 
-//import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -81,17 +81,7 @@ public class SwerveModule {
         driveConfig.encoder.velocityConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION);
 
         driveMotor.configure(driveConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        //driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-
-        //driveMotor.setInverted(moduleConstants.driveInverted);
-        //driveMotor.setIdleMode(IdleMode.kBrake);
-        //driveMotor.setSmartCurrentLimit(25); //set current limit to 25 amps to prevent browning out in the middle of driving 
-
-        //set conversion factor for drive enc 
-       // driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_ENCODER_VELOCITY_CONVERSION); //reads velocity in meters per second instead of RPM
-        //driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION); //reads velocity in meters instead of rotations
-
+        
         /* * * ROTATION MOTOR * * */
         //CONFIGURATIONS
         rotationConfig.inverted(moduleConstants.rotationInverted);
@@ -99,13 +89,7 @@ public class SwerveModule {
         rotationConfig.smartCurrentLimit(25);
 
         rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        //rotationMotor.setInverted(moduleConstants.rotationInverted);
-        //rotationMotor.setIdleMode(IdleMode.kBrake);
-        //rotationMotor.setSmartCurrentLimit(25); //set current limit to 25 amps to prevent browning out in the middle of driving
-
-        //configure rotation absolute encoder 
-          //absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withAbsoluteSensorRange(AbsoluteSensorRangeValue.Signed_PlusMinusHalf)); //abs enc is now +-180
-          absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withAbsoluteSensorDiscontinuityPoint(0.5));
+        absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withAbsoluteSensorDiscontinuityPoint(0.5));
 
 
         //absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withMagnetOffset(moduleConstants.angleOffset)); //implements encoder offset
