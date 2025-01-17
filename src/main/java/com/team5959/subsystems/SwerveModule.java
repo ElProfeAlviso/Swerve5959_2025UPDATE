@@ -4,13 +4,13 @@ package com.team5959.subsystems;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkBaseConfig;
+//import com.revrobotics.spark.config.SparkBaseConfig;
 
-import com.revrobotics.spark.config.EncoderConfig;
+//import com.revrobotics.spark.config.EncoderConfig;
 
 //import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -80,7 +80,7 @@ public class SwerveModule {
         driveConfig.encoder.positionConversionFactor(SwerveConstants.DRIVE_ENCODER_VELOCITY_CONVERSION);
         driveConfig.encoder.velocityConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION);
 
-        driveMotor.configure(driveConfig,null,null );
+        driveMotor.configure(driveConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         //driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
@@ -98,8 +98,7 @@ public class SwerveModule {
         rotationConfig.idleMode(IdleMode.kBrake);
         rotationConfig.smartCurrentLimit(25);
 
-        rotationMotor.configure(driveConfig, null, null);
-
+        rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         //rotationMotor.setInverted(moduleConstants.rotationInverted);
         //rotationMotor.setIdleMode(IdleMode.kBrake);
         //rotationMotor.setSmartCurrentLimit(25); //set current limit to 25 amps to prevent browning out in the middle of driving
