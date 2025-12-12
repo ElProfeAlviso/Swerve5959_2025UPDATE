@@ -126,7 +126,7 @@ public class Constants {
         public static final double DRIVE_ENCODER_VELOCITY_CONVERSION = DRIVE_ENCODER_POSITION_CONVERSION / 60; //drive enc speed por segundo.
      
         /* * * PID VALUES FOR TURNING MOTOR PID * * */
-        public static final double KP_TURNING = 0.007;
+        public static final double KP_TURNING = 0.006;
         public static final double KI_TURNING = 0.0002;
         public static final double KD_TURNING = 0.0001;
 
@@ -146,7 +146,7 @@ public class Constants {
     
     
         /* * * MAX * * */
-        public static final double MAX_SPEED = 3.5; //12.0 ft/s 
+        public static final double MAX_SPEED = 2.5; //12.0 ft/s 
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
         
