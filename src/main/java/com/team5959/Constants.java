@@ -73,7 +73,7 @@ public class Constants {
           public static final int ROTATION_PORT = 2;
           public static final int ABSOLUTE_ENCODER_PORT = 10;
           public static final double OFFSET = (0.3925 * 360); //80.95; (-0.3986 * 90)//este ya está bien-143.87
-          public static final boolean DRIVE_INVERTED = true; 
+          public static final boolean DRIVE_INVERTED = false; 
           public static final boolean ROTATION_INVERTED = true; 
     
           public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -98,7 +98,7 @@ public class Constants {
           public static final int DRIVE_PORT = 7;
           public static final int ROTATION_PORT = 6;
           public static final int ABSOLUTE_ENCODER_PORT = 12;
-          public static final double OFFSET = (-0.3005)*360; //(-0.2290 * )-28.92 + 6;
+          public static final double OFFSET = (0.2100)*360; //(-0.2290 * )-28.92 + 6;
           public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
     
@@ -146,7 +146,7 @@ public class Constants {
     
     
         /* * * MAX * * */
-        public static final double MAX_SPEED = 2; //12.0 ft/s 
+        public static final double MAX_SPEED = 3.5; //12.0 ft/s 
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
         

@@ -178,6 +178,9 @@ public class SwerveModule {
         SmartDashboard.putNumber("S["+absoluteEncoder.getDeviceID()+"] DRIVE SPEED", driveVelocity());
         SmartDashboard.putNumber("S["+absoluteEncoder.getDeviceID()+"] ROTATION SPEED", absoluteEncoder.getVelocity().getValueAsDouble());
         SmartDashboard.putString("S["+absoluteEncoder.getDeviceID()+"] CURRENT STATE", getState().toString());
+
+        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE MOTOR OUTPUT", driveMotor.get());
+        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION MOTOR OUTPUT", rotationMotor.get());
         
         
 
