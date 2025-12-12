@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team5959.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveChassis extends SubsystemBase{
@@ -23,6 +24,8 @@ public class SwerveChassis extends SubsystemBase{
   private SwerveDriveOdometry odometer; 
   private AHRS navx; 
 
+  Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();
+
   public SwerveChassis() {
 
     swerveModules = new SwerveModule[] {
@@ -34,7 +37,7 @@ public class SwerveChassis extends SubsystemBase{
 
     //instantiate navx 
     navx = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    navx.setAngleAdjustment(180); //FIXME //adjustment may be needed depending on robot orientation
+    navx.setAngleAdjustment(0); //FIXME //adjustment may be needed depending on robot orientation
 
     //instantiate odometer 
     odometer = new SwerveDriveOdometry(
@@ -118,6 +121,9 @@ public class SwerveChassis extends SubsystemBase{
     return positions;
   }
 
+
+  
+
   //LOCK 
   public void lock() {
     SwerveModuleState[] states = new SwerveModuleState[4];
@@ -171,18 +177,38 @@ public class SwerveChassis extends SubsystemBase{
     }
 }
 
+public void resetDriveEncoders() {
+  for (SwerveModule swerveMod : swerveModules) {
+    swerveMod.resetDriveEncoder();
+  }
+}
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    odometer.update(navx.getRotation2d(), getModulePositions());
+    odometer.update(getRotation2d(), getModulePositions());
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
     }
    
-    SmartDashboard.putNumber("NAVX", navx.getYaw());
+    SmartDashboard.putNumber("NAVX", -navx.getAngle());
+    SmartDashboard.putNumber("NAVXYAW", navx.getYaw());
+    SmartDashboard.putData("NAVX2D", navx);
     SmartDashboard.putString("POSE INFO", odometer.getPoseMeters().toString());
     SmartDashboard.putNumber("rot 2d", ((getRotation2d().getDegrees() % 360) + 360) % 360);
+
+    SmartDashboard.putNumber("Distancia FL", swerveModules [0].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia FR", swerveModules [2].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia RR", swerveModules [3].getPosition().distanceMeters);
+
+    
+    
+
+  // Add Field2d to display odometry on SmartDashboard
+   SmartDashboard.putData("Field", field2d);
+  field2d.setRobotPose(odometer.getPoseMeters());
     
   }
 

@@ -45,7 +45,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    resetNavxButton.onTrue(new InstantCommand(() -> swerveChassis.resetNavx()));
+    resetNavxButton.onTrue(new InstantCommand(() -> {
+        swerveChassis.resetNavx();
+        swerveChassis.resetDriveEncoders();
+    }));
 
     resetPosButton.onTrue(new InstantCommand(() -> swerveChassis.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))));
   //  limelightStrafeAlign.onTrue(new LimelightRotationAlignCommand(swerveSubs, () -> -xbox.getLeftY(), () -> -xbox.getLeftX(), () -> -xbox.getRightX()));

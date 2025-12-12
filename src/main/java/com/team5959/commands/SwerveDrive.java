@@ -36,9 +36,9 @@ import com.team5959.subsystems.SwerveChassis;
     SwerveModuleState[] states; 
     /* * * ALTERING VALUES * *   */
     //Joystick values -> double 
-    double xSpeed = -xSupplier.getAsDouble(); 
-    double ySpeed = -ySupplier.getAsDouble(); 
-    double zSpeed = -zSupplier.getAsDouble(); 
+    double xSpeed = -xSupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
+    double ySpeed = -ySupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
+    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION;
 
     SmartDashboard.putNumber("z speed", zSpeed);
 

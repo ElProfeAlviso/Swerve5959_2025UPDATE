@@ -43,6 +43,7 @@ public class SwerveModule {
     private PIDController rotationPID; 
 
     //init info 
+    private MagnetSensorConfigs absoluteEncoderConfigs;
     private double encOffset; 
 
     /* * * CONSTRUCTOR * * */
@@ -73,6 +74,7 @@ public class SwerveModule {
         driveConfig.smartCurrentLimit(25);
         driveConfig.encoder.positionConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION);
         driveConfig.encoder.velocityConversionFactor(SwerveConstants.DRIVE_ENCODER_VELOCITY_CONVERSION);
+       
 
         driveMotor.configure(driveConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
@@ -83,11 +85,16 @@ public class SwerveModule {
         rotationConfig.smartCurrentLimit(25);
 
         rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withAbsoluteSensorDiscontinuityPoint(0.5));
+
+        absoluteEncoderConfigs = new MagnetSensorConfigs().withAbsoluteSensorDiscontinuityPoint(0.5)
+        .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
+
+        absoluteEncoder.getConfigurator()
+        .apply(absoluteEncoderConfigs);
 
 
         //absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withMagnetOffset(moduleConstants.angleOffset)); //implements encoder offset
-        absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)); //positive rotation occurs when magnet is spun counter-clockwise when observer is facing the LED side of CANCoder
+        //absoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)); //positive rotation occurs when magnet is spun counter-clockwise when observer is facing the LED side of CANCoder
 
         //configure rotation PID controller 
         rotationPID = new PIDController(
@@ -95,6 +102,7 @@ public class SwerveModule {
             SwerveConstants.KI_TURNING, 
             SwerveConstants.KD_TURNING);
         rotationPID.enableContinuousInput(-180, 180); //Continuous input considers min & max to be the same point; calculates the shortest route to the setpoint 
+        rotationPID.setTolerance(1.5); //1.5 degrees of tolerance
     } 
 
     /* * * GET METHODS * * */
@@ -105,6 +113,8 @@ public class SwerveModule {
     private double drivePosition() {
         return driveEncoder.getPosition();
     }
+
+    
 
     private double getAbsoluteEncoderDegrees() {
         return (absoluteEncoder.getAbsolutePosition().getValueAsDouble() * 360) - encOffset;
@@ -126,15 +136,20 @@ public class SwerveModule {
         //optimize state so the rotation motor doesnt have to spin as much 
         //SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
 
+
+
+        desiredState.optimize(getState().angle);
         SwerveModuleState optimizedState = desiredState;
-       optimizedState.optimize(getState().angle);
+       
 
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees());
 
-        rotationMotor.set(rotationOutput);
-        driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); 
+        rotationOutput = Math.max(-1, Math.min(1, rotationOutput));
 
-        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG", getState().angle.getDegrees());
+        rotationMotor.set(rotationOutput);
+        driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED); 
+
+        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG", optimizedState.angle.getDegrees());
     }
 
     public void setAngle(SwerveModuleState desiredState) {
@@ -154,11 +169,17 @@ public class SwerveModule {
         rotationMotor.set(0);
     }
 
+    public void resetDriveEncoder() {
+        driveEncoder.setPosition(0);        
+    }
+
     public void print() {
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
         SmartDashboard.putNumber("S["+absoluteEncoder.getDeviceID()+"] DRIVE SPEED", driveVelocity());
         SmartDashboard.putNumber("S["+absoluteEncoder.getDeviceID()+"] ROTATION SPEED", absoluteEncoder.getVelocity().getValueAsDouble());
         SmartDashboard.putString("S["+absoluteEncoder.getDeviceID()+"] CURRENT STATE", getState().toString());
+        
+        
 
         
     }

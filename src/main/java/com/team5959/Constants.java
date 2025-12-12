@@ -28,14 +28,14 @@ public class Constants {
     
         /* * * MEASUREMENTS * * */
         //FIXME REPLACE WITH VALUES OF ACTUAL BASE 
-        public static final double WHEEL_DIAMETER = 4 * 2.5 / 100;
-        public static final double TRACK_WIDTH = 0.7366;
-        public static final double WHEEL_BASE = 0.7366;
+        public static final double WHEEL_DIAMETER = 4 * 2.54 / 100; //Diametro en metros
+        public static final double TRACK_WIDTH = 0.5950;
+        public static final double WHEEL_BASE = 0.5950;
       
-        public static final double DRIVE_GEAR_RATIO = 8.14 / 1;
+        public static final double DRIVE_GEAR_RATIO = 6.75 / 1;
         public static final double ROTATION_GEAR_RATIO = 150 / 7;
         
-        public static final double VOLTAGE = 7.2;
+        public static final double VOLTAGE = 12;
     
         /* * * SWERVE DRIVE KINEMATICS * * */
         // ORDER IS ALWAYS FL, BL, FR, BR 
@@ -72,8 +72,8 @@ public class Constants {
           public static final int DRIVE_PORT = 3;
           public static final int ROTATION_PORT = 2;
           public static final int ABSOLUTE_ENCODER_PORT = 10;
-          public static final double OFFSET = (-0.3986 * 90); //80.95; (-0.3986 * 90)//este ya está bien-143.87
-          public static final boolean DRIVE_INVERTED = false; 
+          public static final double OFFSET = (0.3925 * 360); //80.95; (-0.3986 * 90)//este ya está bien-143.87
+          public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
     
           public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -85,8 +85,8 @@ public class Constants {
           public static final int DRIVE_PORT = 9;
           public static final int ROTATION_PORT = 8;
           public static final int ABSOLUTE_ENCODER_PORT = 13;
-          public static final double OFFSET = 220; //(-0.0927 * 90)-101.60 + 6;
-          public static final boolean DRIVE_INVERTED = false; 
+          public static final double OFFSET = (-0.3995)*360; //(-0.0927 * 90)-101.60 + 6;
+          public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
     
           public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -98,7 +98,7 @@ public class Constants {
           public static final int DRIVE_PORT = 7;
           public static final int ROTATION_PORT = 6;
           public static final int ABSOLUTE_ENCODER_PORT = 12;
-          public static final double OFFSET = -100; //(-0.2290 * )-28.92 + 6;
+          public static final double OFFSET = (-0.3005)*360; //(-0.2290 * )-28.92 + 6;
           public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
     
@@ -112,7 +112,7 @@ public class Constants {
           public static final int DRIVE_PORT = 5;
           public static final int ROTATION_PORT = 4;
           public static final int ABSOLUTE_ENCODER_PORT = 11;
-          public static final double OFFSET = 20; //-25.31 - 2;(0.4321 * 55)
+          public static final double OFFSET = (-0.4392)*360; //-25.31 - 2;(0.4321 * 55)
           public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
     
@@ -123,12 +123,16 @@ public class Constants {
         //velocity in meters per sec instead of RPM 
         public static final double DRIVE_ENCODER_POSITION_CONVERSION = ((2 * Math.PI * (WHEEL_DIAMETER/2))) / DRIVE_GEAR_RATIO; //drive enc rotation
         //velocity in meters instead of rotations 
-        public static final double DRIVE_ENCODER_VELOCITY_CONVERSION = DRIVE_ENCODER_POSITION_CONVERSION / 60; //drive enc speed 
+        public static final double DRIVE_ENCODER_VELOCITY_CONVERSION = DRIVE_ENCODER_POSITION_CONVERSION / 60; //drive enc speed por segundo.
      
         /* * * PID VALUES FOR TURNING MOTOR PID * * */
-        public static final double KP_TURNING = 0.0048;
+        public static final double KP_TURNING = 0.007;
         public static final double KI_TURNING = 0.0002;
         public static final double KD_TURNING = 0.0001;
+
+        public static final double DRIVE_KP = 0.05;
+        public static final double DRIVE_KI = 0.0;
+        public static final double DRIVE_KD = 0.0001;
     
         public static final double KP_AUTO_TRANSLATION = 0.285;
         public static final double KI_AUTO_TRANSLATION = 0.001;
@@ -142,7 +146,7 @@ public class Constants {
     
     
         /* * * MAX * * */
-        public static final double MAX_SPEED = 3.6576; //12.0 ft/s 
+        public static final double MAX_SPEED = 2; //12.0 ft/s 
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
         
