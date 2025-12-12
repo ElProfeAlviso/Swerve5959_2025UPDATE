@@ -34,12 +34,12 @@ public class SwerveChassis extends SubsystemBase{
 
     //instantiate navx 
     navx = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    navx.setAngleAdjustment(180);
+    navx.setAngleAdjustment(180); //FIXME //adjustment may be needed depending on robot orientation
 
     //instantiate odometer 
     odometer = new SwerveDriveOdometry(
       SwerveConstants.DRIVE_KINEMATICS, 
-      navx.getRotation2d(), 
+      getRotation2d(), 
       getModulePositions()
     );
 

@@ -1,34 +1,28 @@
 package com.team5959.subsystems;
+import com.revrobotics.spark.SparkMax; // Clase para controlar motores SparkMax
+import com.revrobotics.spark.SparkBase.PersistMode; // Modo de persistencia de configuración
+import com.revrobotics.spark.SparkBase.ResetMode; // Modo de reinicio de configuración
+import com.revrobotics.spark.config.SparkMaxConfig; // Configuración para SparkMax
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode; // Modos de inactividad del motor
+import com.revrobotics.spark.SparkLowLevel.MotorType; // Tipos de motor (Brushless o Brushed)
 
+import edu.wpi.first.math.controller.PIDController; // Controlador PID para control de motores
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.geometry.Rotation2d; // Representación de rotación en 2D
 
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.math.kinematics.SwerveModulePosition; // Posición de un módulo swerve
+import edu.wpi.first.math.kinematics.SwerveModuleState; // Estado de un módulo swerve
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; // Herramienta para mostrar datos en tiempo real
 
+import com.team5959.SwerveModuleConstants; // Constantes específicas para el módulo swerve
+import com.team5959.Constants.SwerveConstants; // Constantes generales para el sistema swerve
 
+import com.revrobotics.RelativeEncoder; // Clase para manejar encoders relativos
 
-
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.team5959.SwerveModuleConstants;
-import com.team5959.Constants.SwerveConstants;
-
-
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-
-import com.ctre.phoenix6.signals.SensorDirectionValue;
-
-import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs; // Configuración para sensores magnéticos
+import com.ctre.phoenix6.signals.SensorDirectionValue; // Valores de dirección del sensor
+import com.ctre.phoenix6.hardware.CANcoder; // Clase para manejar encoders absolutos CANcoder
 
 public class SwerveModule {
     /* * * INITIALIZATION * * */
@@ -77,8 +71,8 @@ public class SwerveModule {
         driveConfig.inverted(moduleConstants.driveInverted);
         driveConfig.idleMode(IdleMode.kBrake);
         driveConfig.smartCurrentLimit(25);
-        driveConfig.encoder.positionConversionFactor(SwerveConstants.DRIVE_ENCODER_VELOCITY_CONVERSION);
-        driveConfig.encoder.velocityConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION);
+        driveConfig.encoder.positionConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION);
+        driveConfig.encoder.velocityConversionFactor(SwerveConstants.DRIVE_ENCODER_VELOCITY_CONVERSION);
 
         driveMotor.configure(driveConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
