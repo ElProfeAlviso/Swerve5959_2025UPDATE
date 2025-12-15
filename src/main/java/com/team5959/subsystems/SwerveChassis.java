@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team5959.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,22 +25,20 @@ public class SwerveChassis extends SubsystemBase{
   private SwerveDriveOdometry odometer; 
   private AHRS navx; 
 
-  Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();
-
-  
+  Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();  
 
   public SwerveChassis() {
 
     swerveModules = new SwerveModule[] {
-      new SwerveModule(0, SwerveConstants.FrontLeft.constants), 
-      new SwerveModule(1, SwerveConstants.BackLeft.constants), 
-      new SwerveModule(2, SwerveConstants.FrontRight.constants), 
-      new SwerveModule(3, SwerveConstants.BackRight.constants)
+      new SwerveModule(0, SwerveConstants.FrontLeft.constants), //Front Left Module
+      new SwerveModule(1, SwerveConstants.BackLeft.constants), //Back Left Module
+      new SwerveModule(2, SwerveConstants.FrontRight.constants), //Front Right Module
+      new SwerveModule(3, SwerveConstants.BackRight.constants)//Back Right Module
     };
 
     //instantiate navx 
     navx = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    navx.setAngleAdjustment(0); //FIXME //adjustment may be needed depending on robot orientation
+    navx.setAngleAdjustment(0); //adjustment may be needed depending on robot orientation
 
     //instantiate odometer 
     odometer = new SwerveDriveOdometry(
@@ -48,18 +47,27 @@ public class SwerveChassis extends SubsystemBase{
       getModulePositions()
     );
 
+    //reset navx after 1 second to ensure proper initialization
+    new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+        resetNavx();
+      } catch (Exception e) {
+        
+      }
+    }).start();
+
+      
   }
 
-    /* * * ODOMETRY * * */
-
-  //returns the Rotation2d object 
-  //a 2d coordinate represented by a point on the unit circle (the rotation of the robot)
-  public Rotation2d getRotation2d() {
-    return navx.getRotation2d();
-  }
+   //Methods
 
   public void resetNavx() {
     navx.reset();
+  }
+
+  public Rotation2d getRotation2d() {
+    return navx.getRotation2d();
   }
 
   public Pose2d getPose() {
@@ -187,6 +195,10 @@ public void resetDriveEncoders() {
   for (SwerveModule swerveMod : swerveModules) {
     swerveMod.resetDriveEncoder();
   }
+}
+
+public void publishTrajectory(String name, Trajectory trajectory) {
+  field2d.getObject(name).setTrajectory(trajectory);
 }
 
   @Override

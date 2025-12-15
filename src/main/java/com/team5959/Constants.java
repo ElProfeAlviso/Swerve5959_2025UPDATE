@@ -2,6 +2,7 @@ package com.team5959;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 //  =================
 //       Red CAN IDS Reference
@@ -63,11 +64,12 @@ public class Constants {
           public static final int DRIVE_PORT = 3;
           public static final int ROTATION_PORT = 2;
           public static final int ABSOLUTE_ENCODER_PORT = 10;
-          public static final double OFFSET = (0.39209 * 360); //80.95; (-0.3986 * 90)//este ya está bien-143.87
+          public static final double OFFSET = (0.39209); //80.95; (-0.3986 * 90)//este ya está bien-143.87
           public static final boolean DRIVE_INVERTED = false; 
           public static final boolean ROTATION_INVERTED = true; 
+          public static final boolean CANCODER_INVERTED = false;
     
-          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
+          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED, CANCODER_INVERTED);
         }
     
         /* * * BACK LEFT * * */
@@ -76,11 +78,12 @@ public class Constants {
           public static final int DRIVE_PORT = 9;
           public static final int ROTATION_PORT = 8;
           public static final int ABSOLUTE_ENCODER_PORT = 13;
-          public static final double OFFSET = (0.10351)*360; //(-0.0927 * 90)-101.60 + 6;
+          public static final double OFFSET = (0.10351); //(-0.0927 * 90)-101.60 + 6;
           public static final boolean DRIVE_INVERTED = false; 
           public static final boolean ROTATION_INVERTED = true; 
+          public static final boolean CANCODER_INVERTED = false;
     
-          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
+          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED, CANCODER_INVERTED);
         }
 
         /* * * FRONT RIGHT * * */
@@ -88,24 +91,26 @@ public class Constants {
           public static final int DRIVE_PORT = 5;
           public static final int ROTATION_PORT = 4;
           public static final int ABSOLUTE_ENCODER_PORT = 11;
-          public static final double OFFSET = (-0.43774)*360; //-25.31 - 2;(0.4321 * 55)
+          public static final double OFFSET = (-0.43774); //-25.31 - 2;(0.4321 * 55)
           public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
+          public static final boolean CANCODER_INVERTED = false;
     
-          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
+          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED, CANCODER_INVERTED);
         }
     
         /* * * BACK RIGHT * * */
-        //FIXME FILL IN VALUES FOR BACK RIGHT 
+        // FILL IN VALUES FOR BACK RIGHT 
         public static class BackRight {
           public static final int DRIVE_PORT = 7;
           public static final int ROTATION_PORT = 6;
           public static final int ABSOLUTE_ENCODER_PORT = 12;
-          public static final double OFFSET = (0.20160)*360; //(-0.2290 * )-28.92 + 6;
+          public static final double OFFSET = (0.20160); //(-0.2290 * )-28.92 + 6;
           public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
+          public static final boolean CANCODER_INVERTED = false;
     
-          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
+          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED, CANCODER_INVERTED);
         }
         
     
@@ -126,20 +131,34 @@ public class Constants {
         public static final double DRIVE_KI = 0.0;
         public static final double DRIVE_KD = 0.0001;
     
-        public static final double KP_AUTO_TRANSLATION = 0.285;
-        public static final double KI_AUTO_TRANSLATION = 0.001;
-        public static final double KD_AUTO_TRANSLATION = 0.0002;
-        public static final double TRANSLATION_TOLLERANCE = 0.025; // tolerance in meters
+        public static final double KP_AUTO_XController = 2.9;
+        public static final double KI_AUTO_XController = 0.0005;
+        public static final double KD_AUTO_XController = 0.001;
+        public static final double AUTO_XTOLLERANCE = 0.025; // tolerance in meters
+
+        public static final double KP_AUTO_YController = 2.85;
+        public static final double KI_AUTO_YController = 0.0005;
+        public static final double KD_AUTO_YController = 0.001;
+        public static final double AUTO_YTOLLERANCE = 0.025; // tolerance in meters
     
-        public static final double KP_AUTO_ROTATION = 0.0011;
-        public static final double KI_AUTO_ROTATION = 0.000;
-        public static final double KD_AUTO_ROTATION = 0.0005;
-        public static final double ROTATION_TOLLERANCE = 1.5; // tolerance in dergrees
+        public static final double KP_AUTO_ROTATION = 1.1;
+        public static final double KI_AUTO_ROTATION = 0.0005;
+        public static final double KD_AUTO_ROTATION = 0.001;
+        public static final double ROTATION_TOLLERANCE = 1; // tolerance in dergrees
     
     
         /* * * MAX * * */
         public static final double MAX_SPEED = 2.5; //meters per second
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
+
+
+        //AUTONOMOUS CONSTANTS
+        public static final double MAX_AUTO_SPEED = 2; //meters per second
+        public static final double MAX_AUTO_ACCELERATION = 1.5; //meters per second squared
+
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
+                new TrapezoidProfile.Constraints(
+                  Math.toRadians(180), Math.toRadians(360));
 
         
       }

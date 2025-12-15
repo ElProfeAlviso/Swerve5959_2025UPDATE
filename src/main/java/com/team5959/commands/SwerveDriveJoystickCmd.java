@@ -7,13 +7,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import com.team5959.Constants.SwerveConstants;
 import com.team5959.subsystems.SwerveChassis;
 
-    public class SwerveDrive extends Command{
+    public class SwerveDriveJoystickCmd extends Command{
     private SwerveChassis swerveChassis; 
 
     private DoubleSupplier xSupplier, ySupplier, zSupplier; 
     private boolean fieldOriented; 
+
       //constructor del chassis
-    public SwerveDrive(SwerveChassis swervecChassis, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier zSupplier, boolean fieldOriented) {
+    public SwerveDriveJoystickCmd(SwerveChassis swervecChassis, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier zSupplier, boolean fieldOriented) {
    
     this.swerveChassis = swervecChassis; 
     this.xSupplier = xSupplier; 
@@ -36,10 +37,7 @@ import com.team5959.subsystems.SwerveChassis;
     //Joystick values -> double 
     double xSpeed = -xSupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
     double ySpeed = -ySupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
-    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION*0.9;
-
-    SmartDashboard.putNumber("z speed", zSpeed);
-
+    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION*0.7;
 
     //apply deadzone to speed values 
     xSpeed = deadzone(xSpeed); 
