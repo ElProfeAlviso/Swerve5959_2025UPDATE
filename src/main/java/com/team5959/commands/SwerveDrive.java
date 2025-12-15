@@ -53,7 +53,9 @@ import com.team5959.subsystems.SwerveChassis;
     ySpeed = modifyAxis(ySpeed); 
     zSpeed = modifyAxis(zSpeed); 
 
-    /* * * SETTING SWERVE STATES * * */ 
+    swerveChassis.drive(xSpeed, ySpeed, zSpeed, fieldOriented);
+
+    /*    
     if (fieldOriented) {
       states = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
         ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, zSpeed, swerveChassis.getRotation2d())
@@ -65,7 +67,9 @@ import com.team5959.subsystems.SwerveChassis;
     }
 
     swerveChassis.setModuleStates(states);
-  }
+  */
+} 
+  
 
   // Called once the command ends or is interrupted.
   @Override

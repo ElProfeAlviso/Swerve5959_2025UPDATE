@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 //  =================
-//       Red CAN
+//       Red CAN IDS Reference
 //  =================
 //   0 · roboRIO
 //   1 · PDH
@@ -17,6 +17,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 //   8 · rearLeftRotation
 //   9 · rearLeftDrive
 //  =================
+//  10 . frontLeftAbsEncoder
+//  11 . frontRightAbsEncoder
+//  12 . rearRightAbsEncoder
+//  13 . rearLeftAbsEncoder
+
 public class Constants {
     public static class ControllerConstants {
         public static final int kDriverControllerPort = 0;
@@ -27,10 +32,9 @@ public class Constants {
         public static final boolean ROTATION_ENCODER_DIRECTION = false; 
     
         /* * * MEASUREMENTS * * */
-        //FIXME REPLACE WITH VALUES OF ACTUAL BASE 
         public static final double WHEEL_DIAMETER = 4 * 2.54 / 100; //Diametro en metros
-        public static final double TRACK_WIDTH = 0.5950;
-        public static final double WHEEL_BASE = 0.5950;
+        public static final double TRACK_WIDTH = 0.6000;
+        public static final double WHEEL_BASE = 0.6000;
       
         public static final double DRIVE_GEAR_RATIO = 6.75 / 1;
         public static final double ROTATION_GEAR_RATIO = 150 / 7;
@@ -39,7 +43,7 @@ public class Constants {
     
         /* * * SWERVE DRIVE KINEMATICS * * */
         // ORDER IS ALWAYS FL, BL, FR, BR 
-        //pos x is out in front, pos y is to the left 
+        //pos x is positive out in front, pos y is positive to the left 
         public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
           
           // front left
@@ -49,25 +53,12 @@ public class Constants {
           // front right
           new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
           // back right
-          new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
-          
-    
-          /* //front left 
-          new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2), 
-    
-          //back left 
-          new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
-    
-          //front right 
-          new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2), 
-    
-          //back right 
-          new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2) */
+          new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)                 
     
         );
     
         /* * * FRONT LEFT * * */
-        //FIXME FILL IN VALUES FOR FRONT LEFT 
+        
         public static class FrontLeft {
           public static final int DRIVE_PORT = 3;
           public static final int ROTATION_PORT = 2;
@@ -80,12 +71,24 @@ public class Constants {
         }
     
         /* * * BACK LEFT * * */
-        //FIXME FILL IN VALUES FOR BACK LEFT 
+       
         public static class BackLeft {
           public static final int DRIVE_PORT = 9;
           public static final int ROTATION_PORT = 8;
           public static final int ABSOLUTE_ENCODER_PORT = 13;
           public static final double OFFSET = (-0.3995)*360; //(-0.0927 * 90)-101.60 + 6;
+          public static final boolean DRIVE_INVERTED = true; 
+          public static final boolean ROTATION_INVERTED = true; 
+    
+          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
+        }
+
+        /* * * FRONT RIGHT * * */
+          public static class FrontRight {
+          public static final int DRIVE_PORT = 5;
+          public static final int ROTATION_PORT = 4;
+          public static final int ABSOLUTE_ENCODER_PORT = 11;
+          public static final double OFFSET = (-0.4392)*360; //-25.31 - 2;(0.4321 * 55)
           public static final boolean DRIVE_INVERTED = true; 
           public static final boolean ROTATION_INVERTED = true; 
     
@@ -106,18 +109,7 @@ public class Constants {
         }
         
     
-        /* * * FRONT RIGHT * * */
-        //FIXME FILL IN VALUES FOR FRONT RIGHT 
-        public static class FrontRight {
-          public static final int DRIVE_PORT = 5;
-          public static final int ROTATION_PORT = 4;
-          public static final int ABSOLUTE_ENCODER_PORT = 11;
-          public static final double OFFSET = (-0.4392)*360; //-25.31 - 2;(0.4321 * 55)
-          public static final boolean DRIVE_INVERTED = true; 
-          public static final boolean ROTATION_INVERTED = true; 
-    
-          public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
-        }
+        
         
         /* * * CONVERSIONS FOR ENCODERS * * */
         //velocity in meters per sec instead of RPM 
@@ -146,7 +138,7 @@ public class Constants {
     
     
         /* * * MAX * * */
-        public static final double MAX_SPEED = 2.5; //12.0 ft/s 
+        public static final double MAX_SPEED = 2.5; //meters per second
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
         

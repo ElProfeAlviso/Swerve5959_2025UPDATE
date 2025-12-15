@@ -65,18 +65,22 @@ public class SwerveChassis extends SubsystemBase{
   public Pose2d getPose() {
     return odometer.getPoseMeters();
   }
-
-  //i dont think this works as intended,, resetPosition should reset everything to 0 
-  public void setPose(Pose2d pose) {
+/* 
+   public void setPose(Pose2d pose) {
     odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
-  }
+  }  */
 
   public void resetOdometry(Pose2d pose) {
     odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
-    return new ChassisSpeeds(SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).vxMetersPerSecond, SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).vyMetersPerSecond, SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond);
+    ChassisSpeeds speeds = SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates());
+    return new ChassisSpeeds(
+      speeds.vxMetersPerSecond,
+      speeds.vyMetersPerSecond,
+      speeds.omegaRadiansPerSecond
+    );
   }
 
   public void driveRobotRelative(ChassisSpeeds chassis) {

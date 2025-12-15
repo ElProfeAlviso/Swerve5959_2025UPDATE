@@ -4,6 +4,7 @@
 
 package com.team5959;
 
+// Import statements for various WPILib classes and custom classes used in the robot code.
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,47 +17,36 @@ import edu.wpi.first.wpilibj.PS4Controller;
 
 
 public class RobotContainer {
-  //SUBSYSTEMS 
+  // Creacion de objetos de SUBSISTEMAS 
   private final SwerveChassis swerveChassis = new SwerveChassis(); 
 
-  //CONTROLLERS  
+  // Creacion de objetos de CONTROLES
   private final PS4Controller control = new PS4Controller(ControllerConstants.kDriverControllerPort);
 
-  //DRIVE BUTTONS 
-  private final JoystickButton resetNavxButton = new JoystickButton(control, 10); 
-
+  // Creacion de objetos de BOTONES para asignar nombres claros 
   private final JoystickButton resetPosButton = new JoystickButton(control, 9);
-
-  //AXIS 
-  @SuppressWarnings("unused")
-  private final int joystickAxis = PS4Controller.Axis.kRightY.value;
-
-
+  private final JoystickButton resetNavxButton = new JoystickButton(control, 10); 
   
+   
   public RobotContainer() {
 
-    //swerveSubs.setDefaultCommand(new S_DriveCommand(swerveSubs, () -> -.getLeftY(), () -> -xbox.getLeftX(), () -> -xbox.getRightX(), true));
-    swerveChassis.setDefaultCommand(new SwerveDrive(swerveChassis, () -> control.getLeftY(), () -> control.getLeftX(), () -> control.getRightX(), true));
+    // Configurar los comandos predeterminados de los subsistemas. En este caso, el chasis swerve
+       swerveChassis.setDefaultCommand(new SwerveDrive(swerveChassis, () -> control.getLeftY(), () -> control.getLeftX(), () -> control.getRightX(), true));
    
-    // shooter.setDefaultCommand(new Sh_JoystickControlCommand(shooter, () -> xbox.getRawAxis(joystickAxis) * 0.9));
-
-    // Configure the trigger bindings
+       // Configure the trigger bindings method.
     configureBindings();
   }
 
+  // Configurar los enlaces de botones para los comandos usando lambdas o referencias de método
   private void configureBindings() {
-    resetNavxButton.onTrue(new InstantCommand(() -> {
-        swerveChassis.resetNavx();
-        swerveChassis.resetDriveEncoders();
-    }));
 
+    resetNavxButton.onTrue(new InstantCommand(() -> {swerveChassis.resetNavx();swerveChassis.resetDriveEncoders();}));
     resetPosButton.onTrue(new InstantCommand(() -> swerveChassis.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))));
-  //  limelightStrafeAlign.onTrue(new LimelightRotationAlignCommand(swerveSubs, () -> -xbox.getLeftY(), () -> -xbox.getLeftX(), () -> -xbox.getRightX()));
-    
+  
   }
   
   public void periodic(){
-    
+        
   }
   
   public Command getAutonomousCommand() {

@@ -1,48 +1,54 @@
 // Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// Código de fuente abierto; puedes modificarlo y/o compartirlo bajo los términos del
+// archivo de licencia WPILib BSD en el directorio raíz de este proyecto.
 
-package com.team5959;
-
+package com.team5959; //Paquete donde se encuentra este proyecto.
+// Importa la clase TimedRobot, que proporciona la estructura básica para un robot basado en tiempo.
 import edu.wpi.first.wpilibj.TimedRobot;
+
+// Importa la interfaz Command, que representa una acción o tarea que puede ser programada y ejecutada.
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Importa la clase CommandScheduler, que se encarga de gestionar la ejecución de comandos.
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
+ * La máquina virtual está configurada para ejecutar automáticamente esta clase, y para llamar a las funciones correspondientes a
+ * cada modo, como se describe en la documentación de TimedRobot. Si cambias el nombre de esta clase o
+ * el paquete después de crear este proyecto, también debes actualizar el archivo build.gradle en el
+ * proyecto.
  */
 public class Robot extends TimedRobot {
+  //Instancia para guardar el comando autónomo que se ejecutará en modo autónomo.
   private Command m_autonomousCommand;
 
+  //Instancia de la clase RobotContainer que gestiona los subsistemas, comandos y enlaces de botones.
   private RobotContainer m_robotContainer;
  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+   * Esta función se ejecuta cuando el robot se inicia por primera vez y debe usarse para cualquier
+   * código de inicialización.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+    // Instancia nuestro RobotContainer. Esto realizará todas nuestras asignaciones de botones y colocará nuestro
+    // selector de autónomo en el dashboard.
     m_robotContainer = new RobotContainer();
   }
   /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
+   * Esta función se llama cada 20 ms, sin importar el modo. Úsala para elementos como diagnósticos
+   * que deseas ejecutar durante deshabilitado, autónomo, teleoperado y prueba.
    *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
+   * <p>Esto se ejecuta después de las funciones periódicas específicas del modo, pero antes de las actualizaciones integradas de
+   * LiveWindow y SmartDashboard.
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.  
+    // Ejecuta el Scheduler. Esto es responsable de consultar botones, agregar comandos recién programados,
+    // ejecutar comandos ya programados, eliminar comandos terminados o interrumpidos,
+    // y ejecutar métodos periódicos de subsistemas. Esto debe llamarse desde el bloque periódico del robot
+    // para que cualquier cosa en el marco basado en comandos funcione.
     CommandScheduler.getInstance().run();
   }
-  /** This function is called once each time the robot enters Disabled mode. */
+  /** Esta función se llama una vez cada vez que el robot entra en modo Deshabilitado. */
   @Override
   public void disabledInit() {}
 
@@ -52,34 +58,34 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledExit() {}
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  /** Este autónomo ejecuta el comando autónomo seleccionado por tu clase {@link RobotContainer}. */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
    
-    // schedule the autonomous command (example)
+    // programa el comando autónomo (ejemplo)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
   }
 
-  /** This function is called periodically during autonomous. */
+  /** Esta función se llama periódicamente durante el modo autónomo. */
   @Override
   public void autonomousPeriodic() {}
 
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // Esto asegura que el autónomo se detenga cuando
+    // el teleoperado comience a ejecutarse. Si deseas que el autónomo
+    // continúe hasta que sea interrumpido por otro comando, elimina
+    // esta línea o coméntala.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
   }
 
-  /** This function is called periodically during operator control. */
+  /** Esta función se llama periódicamente durante el control del operador. */
   @Override
   public void teleopPeriodic() {}
 
@@ -88,19 +94,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    // Cancels all running commands at the start of test mode.
+    // Cancela todos los comandos en ejecución al inicio del modo de prueba.
     CommandScheduler.getInstance().cancelAll();
   }
 
-  /** This function is called periodically during test mode. */
+  /** Esta función se llama periódicamente durante el modo de prueba. */
   @Override
   public void testPeriodic() {}
 
-  /** This function is called once when the robot is first started up. */
+  /** Esta función se llama una vez cuando el robot se inicia por primera vez. */
   @Override
   public void simulationInit() {}
 
-  /** This function is called periodically whilst in simulation. */
+  /** Esta función se llama periódicamente mientras está en simulación. */
   @Override
   public void simulationPeriodic() {}
 }
