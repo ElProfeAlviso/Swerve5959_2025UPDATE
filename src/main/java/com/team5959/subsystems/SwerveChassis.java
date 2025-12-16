@@ -142,10 +142,10 @@ public class SwerveChassis extends SubsystemBase{
   public void lock() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
-    states[0] = new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)));
-    states[1] = new SwerveModuleState(0, new Rotation2d(Math.toRadians(-45)));
-    states[2] = new SwerveModuleState(0, new Rotation2d(Math.toRadians(45)));
-    states[3] = new SwerveModuleState(0, new Rotation2d(Math.toRadians(-45)));
+    states[0] = new SwerveModuleState(0, Rotation2d.fromDegrees(-45));//Front left
+    states[1] = new SwerveModuleState(0, Rotation2d.fromDegrees(45));//BackLeft
+    states[2] = new SwerveModuleState(0, Rotation2d.fromDegrees(45));//Front Right
+    states[3] = new SwerveModuleState(0, Rotation2d.fromDegrees(-45));//BackRight
 
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.setAngle(states[swerveMod.moduleID]);

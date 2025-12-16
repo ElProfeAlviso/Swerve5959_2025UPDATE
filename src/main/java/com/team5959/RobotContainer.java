@@ -25,6 +25,8 @@ import com.team5959.Constants.ControllerConstants;
 import com.team5959.Constants.SwerveConstants;
 import com.team5959.subsystems.SwerveChassis;
 import com.team5959.commands.SwerveDriveJoystickCmd;
+import com.team5959.commands.SwerveDriveXLock;
+
 import edu.wpi.first.wpilibj.PS4Controller;
 
 
@@ -37,7 +39,9 @@ public class RobotContainer {
 
   // Creacion de objetos de BOTONES para asignar nombres claros 
   private final JoystickButton resetPosButton = new JoystickButton(control, 9);
-  private final JoystickButton resetNavxButton = new JoystickButton(control, 10); 
+  private final JoystickButton resetNavxButton = new JoystickButton(control, 10);
+  private final JoystickButton lockPositionButton = new JoystickButton(control, 14);
+ 
 
   
    
@@ -47,7 +51,7 @@ public class RobotContainer {
        swerveChassis.setDefaultCommand(new SwerveDriveJoystickCmd(swerveChassis,
         () -> control.getLeftY(), 
         () -> control.getLeftX(), 
-        () -> control.getRightX(), 
+        () -> control.getRightX(),
         true));
    
        // Configure the trigger bindings method.
@@ -59,6 +63,9 @@ public class RobotContainer {
 
     resetNavxButton.onTrue(new InstantCommand(() -> {swerveChassis.resetNavx();swerveChassis.resetDriveEncoders();}));
     resetPosButton.onTrue(new InstantCommand(() -> swerveChassis.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))));
+    lockPositionButton.whileTrue(new SwerveDriveXLock(swerveChassis));
+    
+
   
   }
   

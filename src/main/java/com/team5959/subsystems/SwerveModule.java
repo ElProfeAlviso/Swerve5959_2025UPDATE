@@ -168,15 +168,18 @@ public class SwerveModule {
         //SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         Rotation2d currentAngle = getState().angle;
+        
+        desiredState.optimize(currentAngle);
+        SwerveModuleState targetAngle = desiredState;
 
-        SwerveModuleState optimizedState = desiredState;
-        optimizedState.optimize(currentAngle);
+        double rotationOutput = rotationPID.calculate(currentAngle.getDegrees(), targetAngle.angle.getDegrees());
 
-
-        double rotationOutput = rotationPID.calculate(currentAngle.getDegrees(), optimizedState.angle.getDegrees());
+        rotationOutput = Math.max(-1, Math.min(1, rotationOutput));
 
         rotationMotor.set(rotationOutput); 
         driveMotor.set(0);
+
+       
     }
 
     public void stop(){
@@ -196,6 +199,8 @@ public class SwerveModule {
 
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE MOTOR OUTPUT", driveMotor.get());
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION MOTOR OUTPUT", rotationMotor.get());
+
+        
         
         
 

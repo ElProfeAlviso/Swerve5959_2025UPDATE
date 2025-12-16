@@ -148,7 +148,7 @@ public class Constants {
     
     
         /* * * MAX * * */
-        public static final double MAX_SPEED = 2.5; //meters per second
+        public static final double MAX_SPEED = 3; //meters per second
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
 
