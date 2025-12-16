@@ -38,11 +38,14 @@ public class RobotContainer {
   // Creacion de objetos de BOTONES para asignar nombres claros 
   private final JoystickButton resetPosButton = new JoystickButton(control, 9);
   private final JoystickButton resetNavxButton = new JoystickButton(control, 10); 
+
   
    
   public RobotContainer() {
 
     TrajectoryConfig tConfig = new TrajectoryConfig(2,1).setKinematics(SwerveConstants.DRIVE_KINEMATICS);
+
+    swerveChassis.publishTrajectory("trajectory", trajectory);
 
     Trajectory robotTrajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
@@ -120,7 +123,7 @@ public class RobotContainer {
                 swerveChassis::setModuleStates,
                 swerveChassis);
 
-                swerveChassis.publishTrajectory("trajectory", trajectory);
+                
 
         // 5. Add some init and wrap-up, and return everything
         return new SequentialCommandGroup(
