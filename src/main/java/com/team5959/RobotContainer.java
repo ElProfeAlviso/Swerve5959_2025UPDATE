@@ -7,7 +7,6 @@ package com.team5959;
 
 // Import statements for various WPILib classes and custom classes used in the robot code.
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -54,8 +53,19 @@ public class RobotContainer {
   // Configurar los enlaces de botones para los comandos usando lambdas o referencias de método
   private void configureBindings() {
 
-    resetNavxButton.onTrue(new InstantCommand(() -> {swerveChassis.resetNavx();swerveChassis.resetDriveEncoders();}));
-    resetPosButton.onTrue(new InstantCommand(() -> swerveChassis.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))));
+    resetNavxButton.onTrue(new InstantCommand(() -> {swerveChassis.resetNavx();swerveChassis.resetHeadingHoldAfterGyroReset();}));
+    resetPosButton.onTrue(new InstantCommand(() -> {
+      // 1. Resetear navX primero
+      swerveChassis.resetNavx();
+      swerveChassis.resetHeadingHoldAfterGyroReset();
+  
+      // 2. Ahora que el gyro está a 0, usar esa rotación para odometría
+      swerveChassis.resetOdometry(new Pose2d(0, 0, swerveChassis.getRotation2d()));
+  
+      // 3. Resetear encoders de los módulos
+      swerveChassis.resetDriveEncoders();
+  }, swerveChassis));
+  
     lockPositionButton.whileTrue(new SwerveDriveXLockCmd(swerveChassis));
     
 

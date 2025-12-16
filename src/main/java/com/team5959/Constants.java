@@ -145,6 +145,11 @@ public class Constants {
         public static final double KI_AUTO_ROTATION = 0.0005;
         public static final double KD_AUTO_ROTATION = 0.001;
         public static final double ROTATION_TOLLERANCE = 1; // tolerance in dergrees
+
+        public static final double KP_AUTO_HOLDING = 0.15;
+        public static final double KI_AUTO_HOLDING = 0.000;
+        public static final double KD_AUTO_HOLDING = 0.001;
+        public static final double HOLDING_TOLLERANCE = 0.1; // tolerance in dergrees
     
     
         /* * * MAX * * */

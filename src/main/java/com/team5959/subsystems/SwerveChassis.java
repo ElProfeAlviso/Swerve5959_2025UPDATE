@@ -1,6 +1,8 @@
 package com.team5959.subsystems;
 
 import com.studica.frc.AHRS;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -8,6 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 import com.team5959.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -15,6 +19,11 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveChassis extends SubsystemBase{
+
+  private final PIDController headingPID = new PIDController(SwerveConstants.KP_AUTO_HOLDING,SwerveConstants.KI_AUTO_HOLDING, SwerveConstants.KD_AUTO_HOLDING); // TUNEAR
+
+    private double headingSetpointDeg = 0.0;
+    private boolean headingHoldEnabled = false;
 
  /* * * INITIALIZATION * * */
  
@@ -28,6 +37,9 @@ public class SwerveChassis extends SubsystemBase{
   Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();  
 
   public SwerveChassis() {
+    headingPID.enableContinuousInput(-180.0, 180.0);
+    headingPID.setTolerance(SwerveConstants.HOLDING_TOLLERANCE); // TUNEAR
+    headingPID.setIZone(5);
 
     SmartDashboard.putData("Field", field2d);
 
@@ -63,10 +75,28 @@ public class SwerveChassis extends SubsystemBase{
       
   }
 
+  public void holdCurrentHeading() {
+    headingSetpointDeg = getRotation2d().getDegrees();
+    headingHoldEnabled = true;
+}
+
+public void disableHeadingHold() {
+    
+    headingHoldEnabled = false;
+}
+
+/** Llamar cuando se resetea el gyro/navX */
+public void resetHeadingHoldAfterGyroReset() {
+  headingSetpointDeg = getRotation2d().getDegrees(); // normalmente 0 tras reset
+  headingPID.reset();
+  headingHoldEnabled = false; // o true, según lo que quieras
+}
+
    //Methods
 
   public void resetNavx() {
     navx.reset();
+
   }
 
   public Rotation2d getRotation2d() {
@@ -187,6 +217,34 @@ public class SwerveChassis extends SubsystemBase{
 
   }
 
+
+  public void driveWithHeadingHold(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented) {
+    double omega; // rad/s para ChassisSpeeds
+
+    if (Math.abs(zSpeed) < 0.05) { // deadband Z → mantener heading
+     
+      
+        if (!headingHoldEnabled) {
+            holdCurrentHeading();
+        }
+        double currentHeadingDeg = getRotation2d().getDegrees();
+        double pidOutput = headingPID.calculate(currentHeadingDeg, headingSetpointDeg);
+        // convertir de deg/s a rad/s aprox.
+        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
+        omega = pidOutput;
+    } else {
+      
+        // joystick Z manda → desactivar hold y usar zSpeedCmd directamente
+        disableHeadingHold();
+        // asumiendo que zSpeedCmd ya está en rad/s o escala que usabas
+        headingSetpointDeg = getRotation2d().getDegrees();
+        omega = zSpeed;
+    }
+
+    // Aquí usas tu implementación existente de drive que espera omega
+    drive(xSpeed, ySpeed, omega, fieldOriented);
+}
+
   //STOP 
   public void stopModules() {
     for (SwerveModule swerveMod : swerveModules) {
@@ -206,6 +264,8 @@ public void publishTrajectory(String name, Trajectory trajectory) {
 
   @Override
   public void periodic() {
+
+    
     // This method will be called once per scheduler run
     odometer.update(getRotation2d(), getModulePositions());
     
@@ -223,6 +283,8 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
     SmartDashboard.putNumber("Distancia FR", swerveModules [2].getPosition().distanceMeters);
     SmartDashboard.putNumber("Distancia RR", swerveModules [3].getPosition().distanceMeters);
+
+    SmartDashboard.putNumber("HEADING SP", headingSetpointDeg);
 
     
 

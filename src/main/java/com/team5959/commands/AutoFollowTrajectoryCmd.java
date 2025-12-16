@@ -23,17 +23,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoFollowTrajectoryCmd extends Command {
 
-  private SwerveChassis swerveChassis;
+ 
   private final SwerveControllerCommand swerveControllerCommand;
+  private final SwerveChassis swerveChassis;
 
    
 
   
   /** Creates a new AutoFollowTrajectoryCmd. */
   public AutoFollowTrajectoryCmd(SwerveChassis swerveChassis) {
-
     this.swerveChassis = swerveChassis;
-    addRequirements(swerveChassis);
+   addRequirements(swerveChassis);
 
     // 1. Create trajectory settings
    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
@@ -103,6 +103,7 @@ swerveControllerCommand = new SwerveControllerCommand(
   @Override
   public void end(boolean interrupted) {
     swerveControllerCommand.end(interrupted);
+    swerveChassis.resetHeadingHoldAfterGyroReset();
   }
 
   // Returns true when the command should end.
