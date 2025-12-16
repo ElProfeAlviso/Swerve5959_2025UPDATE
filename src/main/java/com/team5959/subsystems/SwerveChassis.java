@@ -29,6 +29,8 @@ public class SwerveChassis extends SubsystemBase{
 
   public SwerveChassis() {
 
+    SmartDashboard.putData("Field", field2d);
+
     swerveModules = new SwerveModule[] {
       new SwerveModule(0, SwerveConstants.FrontLeft.constants), //Front Left Module
       new SwerveModule(1, SwerveConstants.BackLeft.constants), //Back Left Module
@@ -39,14 +41,6 @@ public class SwerveChassis extends SubsystemBase{
     //instantiate navx 
     navx = new AHRS(AHRS.NavXComType.kMXP_SPI);
     navx.setAngleAdjustment(0); //adjustment may be needed depending on robot orientation
-
-    //instantiate odometer 
-    odometer = new SwerveDriveOdometry(
-      SwerveConstants.DRIVE_KINEMATICS, 
-      getRotation2d(), 
-      getModulePositions()
-    );
-
     //reset navx after 1 second to ensure proper initialization
     new Thread(() -> {
       try {
@@ -56,6 +50,15 @@ public class SwerveChassis extends SubsystemBase{
         
       }
     }).start();
+
+    //instantiate odometer 
+    odometer = new SwerveDriveOdometry(
+      SwerveConstants.DRIVE_KINEMATICS, 
+      getRotation2d(), 
+      getModulePositions(), new Pose2d(0, 0, getRotation2d())
+    );
+
+    
 
       
   }
@@ -227,7 +230,7 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     
 
   // Add Field2d to display odometry on SmartDashboard
-   SmartDashboard.putData("Field", field2d);
+  
   field2d.setRobotPose(odometer.getPoseMeters());
     
   }

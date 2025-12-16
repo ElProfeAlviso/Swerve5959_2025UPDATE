@@ -9,12 +9,12 @@ import com.team5959.subsystems.SwerveChassis;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class SwerveDriveXLock extends Command {
+public class SwerveDriveXLockCmd extends Command {
 
    private SwerveChassis swerveChassis; 
 
   /** Creates a new SwerveDriveXLock. */
-  public SwerveDriveXLock( SwerveChassis swerveChassis) {
+  public SwerveDriveXLockCmd( SwerveChassis swerveChassis) {
 
     this.swerveChassis = swerveChassis;
 
