@@ -43,24 +43,6 @@ public class RobotContainer {
    
   public RobotContainer() {
 
-    TrajectoryConfig tConfig = new TrajectoryConfig(2,1).setKinematics(SwerveConstants.DRIVE_KINEMATICS);
-
-    swerveChassis.publishTrajectory("trajectory", trajectory);
-
-    Trajectory robotTrajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-      List.of(new Translation2d(2, 4),
-             new Translation2d(4, 3)),
-      new Pose2d(6, 2, Rotation2d.fromDegrees(0)),
-       tConfig);
-
-    Trajectory robotTrajectory2 = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-      List.of(new Translation2d(2, 2),
-               new Translation2d(4, 0)),
-      new Pose2d(6, 6, Rotation2d.fromDegrees(0)), 
-      tConfig);
-
     // Configurar los comandos predeterminados de los subsistemas. En este caso, el chasis swerve
        swerveChassis.setDefaultCommand(new SwerveDriveJoystickCmd(swerveChassis,
         () -> control.getLeftY(), 
@@ -86,9 +68,7 @@ public class RobotContainer {
   
   public Command getAutonomousCommand() {
 
-    swerveChassis.resetNavx();
-
-    
+    swerveChassis.resetNavx();    
 
     // 1. Create trajectory settings
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
@@ -123,7 +103,7 @@ public class RobotContainer {
                 swerveChassis::setModuleStates,
                 swerveChassis);
 
-                
+                swerveChassis.publishTrajectory("trajectory", trajectory);
 
         // 5. Add some init and wrap-up, and return everything
         return new SequentialCommandGroup(
