@@ -10,7 +10,6 @@ package com.team5959; // Declaración del paquete donde se encuentra esta clase.
 
 // Importa la clase RobotBase de la biblioteca WPILib, que es la base para inicializar y ejecutar el robot.
 import edu.wpi.first.wpilibj.RobotBase;
-
 /**
  * NO agregues variables estáticas a esta clase, ni realices ninguna inicialización aquí.
  * A menos que sepas lo que estás haciendo, no modifiques este archivo excepto para cambiar
@@ -20,7 +19,6 @@ public final class Main { // Declaración de la clase principal, marcada como fi
   
   // Constructor privado para evitar que se creen instancias de esta clase.
   private Main() {}
-
   /**
    * Función principal de inicialización. No realices ninguna inicialización aquí.
    *

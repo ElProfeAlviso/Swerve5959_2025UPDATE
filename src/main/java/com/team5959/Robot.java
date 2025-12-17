@@ -73,7 +73,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {}
 
-
   @Override
   public void teleopInit() {
     // Esto asegura que el autónomo se detenga cuando
@@ -84,7 +83,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
   }
-
   /** Esta función se llama periódicamente durante el control del operador. */
   @Override
   public void teleopPeriodic() {}
@@ -96,7 +94,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancela todos los comandos en ejecución al inicio del modo de prueba.
     CommandScheduler.getInstance().cancelAll();
-  }
+    }
 
   /** Esta función se llama periódicamente durante el modo de prueba. */
   @Override

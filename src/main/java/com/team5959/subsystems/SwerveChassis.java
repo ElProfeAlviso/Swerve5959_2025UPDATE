@@ -3,6 +3,7 @@ package com.team5959.subsystems;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -32,6 +33,7 @@ public class SwerveChassis extends SubsystemBase{
 
   //odometer 
   private SwerveDriveOdometry odometer; 
+  private SwerveDrivePoseEstimator poseEstimator;
   private AHRS navx; 
 
   Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();  
@@ -70,7 +72,8 @@ public class SwerveChassis extends SubsystemBase{
       getModulePositions(), new Pose2d(0, 0, getRotation2d())
     );
 
-    
+
+        
 
       
   }
@@ -271,33 +274,26 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     
     // This method will be called once per scheduler run
     odometer.update(getRotation2d(), getModulePositions());
+    field2d.setRobotPose(odometer.getPoseMeters());
+
+    SmartDashboard.putData("NAVX2D", navx);
+    SmartDashboard.putString("POSE INFO", odometer.getPoseMeters().toString());
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
     }
    
-    SmartDashboard.putNumber("NAVX", -navx.getAngle());
-    SmartDashboard.putNumber("NAVXYAW", navx.getYaw());
-    SmartDashboard.putData("NAVX2D", navx);
-    SmartDashboard.putString("POSE INFO", odometer.getPoseMeters().toString());
-    SmartDashboard.putNumber("rot 2d", ((getRotation2d().getDegrees() % 360) + 360) % 360);
-
-    SmartDashboard.putNumber("Distancia FL", swerveModules [0].getPosition().distanceMeters);
-    SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
-    SmartDashboard.putNumber("Distancia FR", swerveModules [2].getPosition().distanceMeters);
-    SmartDashboard.putNumber("Distancia RR", swerveModules [3].getPosition().distanceMeters);
-
-    SmartDashboard.putNumber("HEADING SP", headingSetpointDeg);
-
+    //SmartDashboard.putNumber("NAVX", -navx.getAngle());
+    //SmartDashboard.putNumber("NAVXYAW", navx.getYaw());
     
+    //SmartDashboard.putNumber("rot 2d", ((getRotation2d().getDegrees() % 360) + 360) % 360);
 
-    
-    
+    //SmartDashboard.putNumber("Distancia FL", swerveModules [0].getPosition().distanceMeters);
+   // SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
+    //SmartDashboard.putNumber("Distancia FR", swerveModules [2].getPosition().distanceMeters);
+    //SmartDashboard.putNumber("Distancia RR", swerveModules [3].getPosition().distanceMeters);
 
-  // Add Field2d to display odometry on SmartDashboard
-  
-  field2d.setRobotPose(odometer.getPoseMeters());
-    
+    //SmartDashboard.putNumber("HEADING SP", headingSetpointDeg);
   }
 
   /* * * ADDED METHODS * * */
