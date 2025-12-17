@@ -8,11 +8,14 @@ package com.team5959;
 // Import statements for various WPILib classes and custom classes used in the robot code.
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-
-
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.team5959.Constants.ControllerConstants;
 import com.team5959.subsystems.SwerveChassis;
 import com.team5959.commands.AutoFollowTrajectoryCmd;
@@ -20,9 +23,13 @@ import com.team5959.commands.SwerveDriveJoystickCmd;
 import com.team5959.commands.SwerveDriveXLockCmd;
 
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class RobotContainer {
+
+  private final SendableChooser<Command> autoChooser;
   // Creacion de objetos de SUBSISTEMAS 
   private final SwerveChassis swerveChassis = new SwerveChassis(); 
 
@@ -39,12 +46,38 @@ public class RobotContainer {
    
   public RobotContainer() {
 
+    // Build an auto chooser. This will use Commands.none() as the default option.
+   // autoChooser = AutoBuilder.buildAutoChooser();
+
+   // For convenience a programmer could change this when going to competition.
+   boolean isCompetition = true;
+
+   // Build an auto chooser. This will use Commands.none() as the default option.
+   // As an example, this will only show autos that start with "comp" while at
+   // competition as defined by the programmer
+   autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+     (stream) -> isCompetition
+       ? stream.filter(auto -> auto.getName().startsWith("comp"))
+       : stream
+   );
+
+   SmartDashboard.putData("Auto Chooser", autoChooser);
+   SmartDashboard.putData("Command Scheduler", edu.wpi.first.wpilibj2.command.CommandScheduler.getInstance());
+  
+
+    
+
     // Configurar los comandos predeterminados de los subsistemas. En este caso, el chasis swerve
        swerveChassis.setDefaultCommand(new SwerveDriveJoystickCmd(swerveChassis,
         () -> control.getLeftY(), 
         () -> control.getLeftX(), 
         () -> control.getRightX(),
         true));
+
+
+    //Comandos de ejemplo para usar con PathPlanner
+    NamedCommands.registerCommand("RunIntakeCmd", Commands.none());
+    NamedCommands.registerCommand("OuttakeCmd", Commands.none());
    
        // Configure the trigger bindings method.
     configureBindings();
@@ -77,9 +110,10 @@ public class RobotContainer {
   }
   
   public Command getAutonomousCommand() {
-    
+   // return new PathPlannerAuto("Auto1");   
 
-        return new AutoFollowTrajectoryCmd(swerveChassis);
+   return autoChooser.getSelected();
+       // return new AutoFollowTrajectoryCmd(swerveChassis);
     
   }
 }

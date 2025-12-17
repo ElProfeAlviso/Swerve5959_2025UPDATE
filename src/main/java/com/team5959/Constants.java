@@ -150,6 +150,16 @@ public class Constants {
         public static final double KI_AUTO_HOLDING = 0.000;
         public static final double KD_AUTO_HOLDING = 0.001;
         public static final double HOLDING_TOLLERANCE = 0.1; // tolerance in dergrees
+
+        public static final double KP_TRANS_PATHPLANNER = 10;
+        public static final double KI_TRANS_PATHPLANNER = 0.001;
+        public static final double KD_TRANS_PATHPLANNER = 0.001;
+        public static final double PIDPATHPLANNER_TRANS_TOLLERANCE = 1; // tolerance in dergrees
+
+        public static final double KP_ROT_PATHPLANNER = 8;
+        public static final double KI_ROT_PATHPLANNER = 0.001;
+        public static final double KD_ROT_PATHPLANNER = 0.03;
+        public static final double PIDPATHPLANNER_ROT_TOLLERANCE = 1; // tolerance in dergrees
     
     
         /* * * MAX * * */

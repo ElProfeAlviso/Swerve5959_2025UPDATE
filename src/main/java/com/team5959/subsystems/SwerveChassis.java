@@ -1,5 +1,9 @@
 package com.team5959.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -16,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.team5959.Constants.SwerveConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -39,6 +44,7 @@ public class SwerveChassis extends SubsystemBase{
   Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();  
 
   public SwerveChassis() {
+
     headingPID.enableContinuousInput(-180.0, 180.0);
     headingPID.setTolerance(SwerveConstants.HOLDING_TOLLERANCE); // TUNEAR
     headingPID.setIZone(5);
@@ -69,13 +75,45 @@ public class SwerveChassis extends SubsystemBase{
     odometer = new SwerveDriveOdometry(
       SwerveConstants.DRIVE_KINEMATICS, 
       getRotation2d(), 
-      getModulePositions(), new Pose2d(0, 0, getRotation2d())
+      getModulePositions(),
+      new Pose2d(0, 0, getRotation2d())
     );
 
+    //instantiate pose estimator
+    poseEstimator = new SwerveDrivePoseEstimator(
+      SwerveConstants.DRIVE_KINEMATICS, 
+      getRotation2d(),
+      getModulePositions(),
+      new Pose2d(0, 0, getRotation2d()));  
 
-        
+       // Load the RobotConfig from the GUI settings. You should probably
+    // store this in your Constants file
+    RobotConfig config = null;
+    try{
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
 
-      
+    
+      AutoBuilder.configure(
+        this::getPose2d, 
+        this::resetOdometry, 
+        this::getRobotRelativeSpeeds,
+        this::driveRobotRelative,
+        new PPHolonomicDriveController(
+        new PIDConstants(SwerveConstants.KP_TRANS_PATHPLANNER, SwerveConstants.KI_TRANS_PATHPLANNER, SwerveConstants.KD_TRANS_PATHPLANNER),
+        new PIDConstants(SwerveConstants.KP_ROT_PATHPLANNER, SwerveConstants.KI_ROT_PATHPLANNER, SwerveConstants.KD_ROT_PATHPLANNER)),
+         config,
+         () -> {
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this);
   }
 
   public void holdCurrentHeading() {
@@ -109,6 +147,10 @@ public void resetHeadingHoldAfterGyroReset() {
   public Pose2d getPose() {
     return odometer.getPoseMeters();
   }
+
+  public Pose2d getPose2d(){
+    return poseEstimator.getEstimatedPosition();
+  }
 /* 
    public void setPose(Pose2d pose) {
     odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
@@ -116,6 +158,7 @@ public void resetHeadingHoldAfterGyroReset() {
 
   public void resetOdometry(Pose2d pose) {
     odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
+    poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
@@ -274,6 +317,8 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     
     // This method will be called once per scheduler run
     odometer.update(getRotation2d(), getModulePositions());
+    poseEstimator.update(getRotation2d(), getModulePositions());
+
     field2d.setRobotPose(odometer.getPoseMeters());
 
     SmartDashboard.putData("NAVX2D", navx);
