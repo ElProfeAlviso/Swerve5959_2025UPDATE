@@ -217,33 +217,36 @@ public void resetHeadingHoldAfterGyroReset() {
 
   }
 
+  private boolean wasRotating = false;  // true si en el ciclo anterior |zSpeed| >= deadband
 
   public void driveWithHeadingHold(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented) {
-    double omega; // rad/s para ChassisSpeeds
-
-    if (Math.abs(zSpeed) < 0.05) { // deadband Z → mantener heading
-     
-      
-        if (!headingHoldEnabled) {
-            holdCurrentHeading();
-        }
-        double currentHeadingDeg = getRotation2d().getDegrees();
-        double pidOutput = headingPID.calculate(currentHeadingDeg, headingSetpointDeg);
-        // convertir de deg/s a rad/s aprox.
-        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
-        omega = pidOutput;
-    } else {
-      
-        // joystick Z manda → desactivar hold y usar zSpeedCmd directamente
-        disableHeadingHold();
-        // asumiendo que zSpeedCmd ya está en rad/s o escala que usabas
-        headingSetpointDeg = getRotation2d().getDegrees();
-        omega = zSpeed;
-    }
-
-    // Aquí usas tu implementación existente de drive que espera omega
-    drive(xSpeed, ySpeed, omega, fieldOriented);
-}
+      double omega;
+  
+      boolean rotatingNow = Math.abs(zSpeed) >= 0.05;
+  
+      if (!rotatingNow) { // deadband Z → mantener heading
+          // flanco de bajada: veníamos girando y ahora NO
+          if (wasRotating || !headingHoldEnabled) {
+              // Captura el heading EXACTO en el primer ciclo de reposo
+              headingSetpointDeg = getRotation2d().getDegrees();
+              headingPID.reset();
+              headingHoldEnabled = true;
+          }
+  
+          double currentHeadingDeg = getRotation2d().getDegrees();
+          double pidOutput = headingPID.calculate(currentHeadingDeg, headingSetpointDeg);
+          pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
+          omega = pidOutput;
+      } else {
+          // joystick Z manda
+          disableHeadingHold();
+          omega = zSpeed;
+      }
+  
+      wasRotating = rotatingNow;
+  
+      drive(xSpeed, ySpeed, omega, fieldOriented);
+  }
 
   //STOP 
   public void stopModules() {

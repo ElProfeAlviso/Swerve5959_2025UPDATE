@@ -38,7 +38,7 @@ import com.team5959.subsystems.SwerveChassis;
     //Joystick values -> double 
     double xSpeed = -xSupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
     double ySpeed = -ySupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
-    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION*0.7;
+    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION*0.6;
 
     //apply deadzone to speed values 
     xSpeed = deadzone(xSpeed); 
@@ -50,7 +50,7 @@ import com.team5959.subsystems.SwerveChassis;
     ySpeed = modifyAxis(ySpeed); 
     zSpeed = modifyAxis(zSpeed); 
 
-    swerveChassis.drive(xSpeed, ySpeed, zSpeed, fieldOriented);//FIXME SI NO FUNCIONA EL HOLDING REGRESAR A METODO DRIVE
+    swerveChassis.driveWithHeadingHold(xSpeed, ySpeed, zSpeed, fieldOriented);//FIXME SI NO FUNCIONA EL HOLDING REGRESAR A METODO DRIVE
 
     /*    
     if (fieldOriented) {

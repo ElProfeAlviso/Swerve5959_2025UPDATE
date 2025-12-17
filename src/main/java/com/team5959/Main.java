@@ -1,33 +1,4 @@
 /**
- * Clase principal del programa que sirve como punto de entrada para la ejecución del robot.
- * 
- * <p>Esta clase está diseñada para ser utilizada con la biblioteca WPILib, que es un conjunto
- * de herramientas y bibliotecas utilizadas para programar robots en la competencia FIRST Robotics.
- * 
- * <p>Notas importantes:
- * - No se deben agregar variables estáticas ni realizar inicializaciones en esta clase.
- * - A menos que se tenga un conocimiento avanzado, no se debe modificar esta clase excepto
- *   para cambiar el parámetro de la llamada al método `startRobot`.
- * 
- * <p>El propósito principal de esta clase es inicializar y ejecutar la clase principal del robot.
- */
- 
-/**
- * Constructor privado para evitar la creación de instancias de esta clase.
- * 
- * <p>La clase `Main` no está diseñada para ser instanciada, ya que su único propósito es
- * contener el método `main` que inicia la ejecución del programa.
- */
-
-/**
- * Método principal de inicialización del programa.
- * 
- * <p>Este método es el punto de entrada del programa y es llamado automáticamente al iniciar
- * la aplicación. Utiliza el método `RobotBase.startRobot` para inicializar y ejecutar la clase
- * principal del robot.
- * 
- * <p>Si se desea cambiar la clase principal del robot, se debe modificar el parámetro pasado
- * al método `startRobot`. En este caso, la clase principal del robot es `Robot`.
  * 
  * @param args Argumentos de línea de comandos (no utilizados en este programa).
  */
