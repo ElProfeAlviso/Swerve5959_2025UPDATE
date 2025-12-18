@@ -127,9 +127,17 @@ public class Constants {
         public static final double KI_TURNING = 0.0002;
         public static final double KD_TURNING = 0.0001;
 
-        public static final double DRIVE_KP = 0.05;
+        public static final double DRIVE_KP = 0.001;
         public static final double DRIVE_KI = 0.0;
         public static final double DRIVE_KD = 0.0001;
+
+        public static final double DRIVE_KS = 0.07;
+        public static final double DRIVE_KV = 3.4;
+        public static final double DRIVE_KA =0.2;
+
+
+
+
     
         public static final double KP_AUTO_XController = 2.9;
         public static final double KI_AUTO_XController = 0.0005;

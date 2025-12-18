@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -83,6 +85,10 @@ public class RobotContainer {
     configureBindings();
   }
 
+  public SwerveChassis getSwerveChassis(){
+    return swerveChassis;
+  }
+
   // Configurar los enlaces de botones para los comandos usando lambdas o referencias de método
   private void configureBindings() {
 
@@ -109,9 +115,8 @@ public class RobotContainer {
         
   }
   
-  public Command getAutonomousCommand() {
-   // return new PathPlannerAuto("Auto1");   
-
+  public Command getAutonomousCommand() {    
+    
    return autoChooser.getSelected();
        // return new AutoFollowTrajectoryCmd(swerveChassis);
     

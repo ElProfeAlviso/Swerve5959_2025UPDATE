@@ -6,7 +6,11 @@ import com.revrobotics.spark.config.SparkMaxConfig; // Configuración para Spark
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode; // Modos de inactividad del motor
 import com.revrobotics.spark.SparkLowLevel.MotorType; // Tipos de motor (Brushless o Brushed)
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController; // Controlador PID para control de motores
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
+
 
 import edu.wpi.first.math.geometry.Rotation2d; // Representación de rotación en 2D
 
@@ -41,6 +45,8 @@ public class SwerveModule {
 
     //init PID Controller for turning 
     private PIDController rotationPID; 
+    private SimpleMotorFeedforward driveFF;
+    private PIDController drivePID;
 
     //init info 
     private MagnetSensorConfigs absoluteEncoderConfigs;
@@ -103,6 +109,19 @@ public class SwerveModule {
         rotationPID.enableContinuousInput(-180, 180); //Continuous input considers min & max to be the same point; calculates the shortest route to the setpoint 
         rotationPID.setTolerance(1); //1.5 degrees of tolerance
 
+
+        driveFF = new SimpleMotorFeedforward(
+        SwerveConstants.DRIVE_KS,
+        SwerveConstants.DRIVE_KV,
+        SwerveConstants.DRIVE_KA
+    );
+
+    drivePID = new PIDController(
+    SwerveConstants.DRIVE_KP,
+    SwerveConstants.DRIVE_KI,
+    SwerveConstants.DRIVE_KD
+);
+
         resetDriveEncoder();
     } 
 
@@ -158,7 +177,26 @@ public class SwerveModule {
         rotationOutput = Math.max(-1, Math.min(1, rotationOutput));
 
         rotationMotor.set(rotationOutput);
-        driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED); 
+//_________________________________________________________________________
+        double targetSpeed = optimizedState.speedMetersPerSecond;
+        double currentSpeed = driveVelocity();
+
+        // PID (corrige error)
+        double pidOutput = drivePID.calculate(currentSpeed, targetSpeed);
+
+        // Feedforward (modelo físico)
+        double ffOutput = driveFF.calculate(targetSpeed);
+
+        // Suma total en VOLTAJE
+        double totalVoltage = pidOutput + ffOutput;
+
+        totalVoltage = MathUtil.clamp(totalVoltage, -12.0, 12.0);
+
+        // Enviar voltaje al SparkMax
+        driveMotor.setVoltage(totalVoltage);
+
+//_____________________________________________________________________________
+       // driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED); 
 
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG", optimizedState.angle.getDegrees());
         SmartDashboard.putString("Swerve Module " + moduleID + " State", optimizedState.toString());

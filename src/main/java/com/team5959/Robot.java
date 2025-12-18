@@ -3,6 +3,7 @@
 // archivo de licencia WPILib BSD en el directorio raíz de este proyecto.
 
 package com.team5959; //Paquete donde se encuentra este proyecto.
+import edu.wpi.first.math.geometry.Rotation2d;
 // Importa la clase TimedRobot, que proporciona la estructura básica para un robot basado en tiempo.
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -61,6 +62,8 @@ public class Robot extends TimedRobot {
   /** Este autónomo ejecuta el comando autónomo seleccionado por tu clase {@link RobotContainer}. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.getSwerveChassis().setNavxOffset(Rotation2d.fromDegrees(0)); //Ajusta el offset del navx si es necesario
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
    
     // programa el comando autónomo (ejemplo)
@@ -75,6 +78,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
+    m_robotContainer.getSwerveChassis().setNavxOffset(Rotation2d.fromDegrees(180)); //Ajusta el offset del navx si es necesario
+    m_robotContainer.getSwerveChassis().resetHeadingHoldAfterGyroReset();
+    m_robotContainer.getSwerveChassis().resetOdometry(m_robotContainer.getSwerveChassis().getPose());
     // Esto asegura que el autónomo se detenga cuando
     // el teleoperado comience a ejecutarse. Si deseas que el autónomo
     // continúe hasta que sea interrumpido por otro comando, elimina

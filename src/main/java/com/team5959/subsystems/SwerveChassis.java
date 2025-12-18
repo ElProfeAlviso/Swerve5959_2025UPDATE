@@ -40,6 +40,7 @@ public class SwerveChassis extends SubsystemBase{
   private SwerveDriveOdometry odometer; 
   private SwerveDrivePoseEstimator poseEstimator;
   private AHRS navx; 
+  private Rotation2d navxOffset;
 
   Field2d field2d = new edu.wpi.first.wpilibj.smartdashboard.Field2d();  
 
@@ -61,6 +62,8 @@ public class SwerveChassis extends SubsystemBase{
     //instantiate navx 
     navx = new AHRS(AHRS.NavXComType.kMXP_SPI);
     navx.setAngleAdjustment(0); //adjustment may be needed depending on robot orientation
+    navxOffset = new Rotation2d(0);
+
     //reset navx after 1 second to ensure proper initialization
     new Thread(() -> {
       try {
@@ -140,8 +143,12 @@ public void resetHeadingHoldAfterGyroReset() {
 
   }
 
+  public void setNavxOffset(Rotation2d offset) {
+    navxOffset = offset;
+  }
+
   public Rotation2d getRotation2d() {
-    return navx.getRotation2d();
+    return navx.getRotation2d().plus(navxOffset);
   }
 
   public Pose2d getPose() {
