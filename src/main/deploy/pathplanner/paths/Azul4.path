@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.0361990108115124,
-        "y": 2.4856297837830303
+        "x": 4.541447368421052,
+        "y": 1.9467105263157898
       },
       "isLocked": false,
       "linkedName": "EndAzul3"
     },
     {
       "anchor": {
-        "x": 3.3964638157894735,
-        "y": 2.350822368421053
+        "x": 3.4157072368421053,
+        "y": 2.4662828947368416
       },
       "prevControl": {
-        "x": 3.1464642217310286,
-        "y": 2.3512728910206655
+        "x": 4.820476973684211,
+        "y": 1.754276315789474
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,18 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 5.0,
+        "y": 5.5
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.25,
+      "maxWaypointRelativePos": 0.75,
+      "name": "Speaker"
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.1,

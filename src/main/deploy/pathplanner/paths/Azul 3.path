@@ -30,12 +30,23 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 6.0,
+        "y": 5.5
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.18132854578096974,
+      "maxWaypointRelativePos": 0.7235188509874328,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
       "name": "Prepareforscore",
       "waypointRelativePos": 0.25673249551167027,
-      "endWaypointRelativePos": null,
+      "endWaypointRelativePos": 0.37881508078994514,
       "command": null
     }
   ],
