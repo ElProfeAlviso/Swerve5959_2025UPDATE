@@ -333,10 +333,18 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     
     //SmartDashboard.putNumber("rot 2d", ((getRotation2d().getDegrees() % 360) + 360) % 360);
 
-    //SmartDashboard.putNumber("Distancia FL", swerveModules [0].getPosition().distanceMeters);
-   // SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
-    //SmartDashboard.putNumber("Distancia FR", swerveModules [2].getPosition().distanceMeters);
-    //SmartDashboard.putNumber("Distancia RR", swerveModules [3].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia FL", swerveModules [0].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia FR", swerveModules [2].getPosition().distanceMeters);
+    SmartDashboard.putNumber("Distancia RR", swerveModules [3].getPosition().distanceMeters);
+
+    SmartDashboard.putNumber("Speed FL", swerveModules [0].getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("Speed RL", swerveModules [1].getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("Speed FR", swerveModules [2].getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("Speed RR", swerveModules [3].getState().speedMetersPerSecond);
+
+
+    
 
     //SmartDashboard.putNumber("HEADING SP", headingSetpointDeg);
   }

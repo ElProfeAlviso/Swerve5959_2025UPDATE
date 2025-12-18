@@ -40,7 +40,7 @@ import com.team5959.subsystems.SwerveChassis;
     //Joystick values -> double 
     double xSpeed = -xSupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
     double ySpeed = -ySupplier.getAsDouble() * SwerveConstants.MAX_SPEED; 
-    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION*0.6;
+    double zSpeed = -zSupplier.getAsDouble()*SwerveConstants.MAX_ROTATION*0.4;
 
     //apply deadzone to speed values 
     xSpeed = deadzone(xSpeed); 

@@ -89,7 +89,7 @@ public class RobotContainer {
     resetNavxButton.onTrue(new InstantCommand(() -> {swerveChassis.resetNavx();swerveChassis.resetHeadingHoldAfterGyroReset();}));
     resetPosButton.onTrue(new InstantCommand(() -> {
       // 1. Resetear navX primero
-      swerveChassis.resetNavx();
+      //swerveChassis.resetNavx();
       swerveChassis.resetHeadingHoldAfterGyroReset();
   
       // 2. Ahora que el gyro está a 0, usar esa rotación para odometría

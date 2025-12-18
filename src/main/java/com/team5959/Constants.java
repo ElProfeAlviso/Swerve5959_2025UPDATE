@@ -151,9 +151,9 @@ public class Constants {
         public static final double KD_AUTO_HOLDING = 0.001;
         public static final double HOLDING_TOLLERANCE = 0.1; // tolerance in dergrees
 
-        public static final double KP_TRANS_PATHPLANNER =3.5;
-        public static final double KI_TRANS_PATHPLANNER = 0.000;
-        public static final double KD_TRANS_PATHPLANNER = 0.0001;
+        public static final double KP_TRANS_PATHPLANNER =5;
+        public static final double KI_TRANS_PATHPLANNER = 0.0001;
+        public static final double KD_TRANS_PATHPLANNER = 0.001;
         public static final double PIDPATHPLANNER_TRANS_TOLLERANCE = 1; // tolerance in dergrees
 
         public static final double KP_ROT_PATHPLANNER = 5;
@@ -163,7 +163,7 @@ public class Constants {
     
     
         /* * * MAX * * */
-        public static final double MAX_SPEED = 3; //meters per second
+        public static final double MAX_SPEED = 3.45; //meters per second
         public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
 
