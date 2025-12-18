@@ -45,7 +45,7 @@
     "rotation": -121.37300514010848
   },
   "reversed": false,
-  "folder": null,
+  "folder": "AutoDemos",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

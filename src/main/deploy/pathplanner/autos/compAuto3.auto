@@ -9,6 +9,61 @@
           "data": {
             "pathName": "Azul 3"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scorereef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Azul4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "getcoral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "runIntakeCmd"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "offtakeCmd"
+          }
         }
       ]
     }

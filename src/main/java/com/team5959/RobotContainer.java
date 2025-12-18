@@ -17,6 +17,7 @@ import java.util.List;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.team5959.Constants.ControllerConstants;
 import com.team5959.subsystems.SwerveChassis;
@@ -48,6 +49,16 @@ public class RobotContainer {
    
   public RobotContainer() {
 
+    //Comandos de ejemplo para usar con PathPlanner
+    NamedCommands.registerCommand("runIntakeCmd", Commands.print("Enciendo intake"));
+    NamedCommands.registerCommand("offtakeCmd", Commands.print("Apagando Intake"));
+
+    NamedCommands.registerCommand("scorereef", Commands.runOnce(()->{System.out.println("Anotando en Reef");}));
+    NamedCommands.registerCommand("getcoral", Commands.runOnce(()->{System.out.println("Solicitando coral");}));
+
+    new EventTrigger("Prepareforscore").onTrue(Commands.runOnce(()->{System.out.println("Preparando Intake event");}));
+   
+
     // Build an auto chooser. This will use Commands.none() as the default option.
    // autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -77,10 +88,7 @@ public class RobotContainer {
         true));
 
 
-    //Comandos de ejemplo para usar con PathPlanner
-    NamedCommands.registerCommand("RunIntakeCmd", Commands.none());
-    NamedCommands.registerCommand("OuttakeCmd", Commands.none());
-   
+    
        // Configure the trigger bindings method.
     configureBindings();
   }
