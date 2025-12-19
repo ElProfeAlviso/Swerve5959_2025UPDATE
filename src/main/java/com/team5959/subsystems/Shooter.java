@@ -31,6 +31,8 @@ public class Shooter extends SubsystemBase {
   private double shooterSetPoint = 0;//Variable para almacenar el setpoint del shooter
   private boolean shooterEnabled = false;
 
+  
+
  
 
   //Creacion de objeto de Sendable personalizado  del Shooter PID Sparkmax para envio a elastic.
@@ -87,7 +89,7 @@ public class Shooter extends SubsystemBase {
     shooterMotorLeft.configure(shooterMotorLeftConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
      // Envía los controles PID del Shooter al SmartDashboard para ajustes en tiempo real
-     SmartDashboard.putData("PID Shooter", pidShooterSendable); 
+     //SmartDashboard.putData("PID Shooter", pidShooterSendable); 
 
   }
 
@@ -134,12 +136,12 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
    
-
+/* 
     //PID Shooter Smartdashboard
     SmartDashboard.putNumber("Shooter Set Point", shooterSetPoint);
     SmartDashboard.putNumber("Shooter Velocity", shooterMotorRight.getEncoder().getVelocity());
     SmartDashboard.putNumber("Shooter Output", shooterMotorRight.getAppliedOutput());
-
+ */
     
   }
 }

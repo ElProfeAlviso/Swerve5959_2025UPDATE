@@ -5,23 +5,32 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 //  =================
-//       Red CAN IDS Reference
+//       Red CAN
 //  =================
 //   0 · roboRIO
 //   1 · PDH
+
 //   2 · frontLeftRotation
 //   3 · frontLeftDrive
 //   4 · frontRightRotation
 //   5 · frontRightDrive
-//   6 · rearRightRotation
+//   6 · rearRightRotation   //FIXME check CAN ID's out
 //   7 · rearRightDrive
 //   8 · rearLeftRotation
 //   9 · rearLeftDrive
+
+//   16 · elevatorRight  70:1
+//   17 · elevatorLeft
+
+//   18 · armIntakeMotor  90:1
+//   19 · algaeIntakeMotor 30:1
+
+//   20 · coralIntakeMotorRight 25:1
+//   21 · coralIntakeMotorLeft 25:1
+
+//   22 · miniArmMotor 50:1
 //  =================
-//  10 . frontLeftAbsEncoder
-//  11 . frontRightAbsEncoder
-//  12 . rearRightAbsEncoder
-//  13 . rearLeftAbsEncoder
+//30 CanRange
 
 public class Constants {
     public static class ControllerConstants {

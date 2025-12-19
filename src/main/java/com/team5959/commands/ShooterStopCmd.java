@@ -10,10 +10,10 @@ import com.team5959.subsystems.Shooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShooterStop extends InstantCommand {
+public class ShooterStopCmd extends InstantCommand {
   private Shooter shooter; // Subsystem that controls the shooter
 
-  public ShooterStop(Shooter shooterSubsystem) {
+  public ShooterStopCmd(Shooter shooterSubsystem) {
     this.shooter = shooterSubsystem;
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.

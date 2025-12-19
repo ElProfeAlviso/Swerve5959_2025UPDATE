@@ -23,6 +23,18 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "offtakeCmd"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Azul4"
@@ -31,26 +43,55 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.2
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "getcoral"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeCmd"
-                }
-              }
-            ]
+            "name": "scorereef"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "offtakeCmd"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runIntakeCmd"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Azul1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scorereef"
           }
         },
         {
@@ -63,6 +104,12 @@
           "type": "named",
           "data": {
             "name": "offtakeCmd"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Azul2"
           }
         }
       ]

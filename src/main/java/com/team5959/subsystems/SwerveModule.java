@@ -197,9 +197,9 @@ public class SwerveModule {
 
 //_____________________________________________________________________________
        // driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED); 
-
+/* 
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG", optimizedState.angle.getDegrees());
-        SmartDashboard.putString("Swerve Module " + moduleID + " State", optimizedState.toString());
+        SmartDashboard.putString("Swerve Module " + moduleID + " State", optimizedState.toString()); */
     }
 
     public void setAngle(SwerveModuleState desiredState) {
@@ -229,7 +229,7 @@ public class SwerveModule {
 
    
 
-    public void print() {
+    public void print() {/* 
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
         SmartDashboard.putNumber("S["+absoluteEncoder.getDeviceID()+"] DRIVE SPEED", driveVelocity());
         SmartDashboard.putNumber("S["+absoluteEncoder.getDeviceID()+"] ROTATION SPEED", absoluteEncoder.getVelocity().getValueAsDouble());
@@ -237,7 +237,7 @@ public class SwerveModule {
 
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE MOTOR OUTPUT", driveMotor.get());
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION MOTOR OUTPUT", rotationMotor.get());
-
+ */
         
         
         

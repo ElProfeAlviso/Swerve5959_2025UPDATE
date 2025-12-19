@@ -329,7 +329,7 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     field2d.setRobotPose(odometer.getPoseMeters());
 
     SmartDashboard.putData("NAVX2D", navx);
-    SmartDashboard.putString("POSE INFO", odometer.getPoseMeters().toString());
+    //SmartDashboard.putString("POSE INFO", odometer.getPoseMeters().toString());
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
@@ -338,7 +338,7 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     //SmartDashboard.putNumber("NAVX", -navx.getAngle());
     //SmartDashboard.putNumber("NAVXYAW", navx.getYaw());
     
-    //SmartDashboard.putNumber("rot 2d", ((getRotation2d().getDegrees() % 360) + 360) % 360);
+    /* //SmartDashboard.putNumber("rot 2d", ((getRotation2d().getDegrees() % 360) + 360) % 360);
 
     SmartDashboard.putNumber("Distancia FL", swerveModules [0].getPosition().distanceMeters);
     SmartDashboard.putNumber("Distancia RL", swerveModules [1].getPosition().distanceMeters);
@@ -349,7 +349,7 @@ public void publishTrajectory(String name, Trajectory trajectory) {
     SmartDashboard.putNumber("Speed RL", swerveModules [1].getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Speed FR", swerveModules [2].getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Speed RR", swerveModules [3].getState().speedMetersPerSecond);
-
+ */
 
     
 

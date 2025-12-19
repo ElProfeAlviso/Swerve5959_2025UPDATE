@@ -21,14 +21,19 @@ import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.events.PointTowardsZoneTrigger;
 
 import com.team5959.Constants.ControllerConstants;
+import com.team5959.subsystems.Climber;
 import com.team5959.subsystems.Shooter;
 import com.team5959.subsystems.SwerveChassis;
-import com.team5959.commands.ShooterPID;
-import com.team5959.commands.ShooterStop;
+import com.team5959.commands.ClimberHoldPosition;
+import com.team5959.commands.ClimberPID;
+import com.team5959.commands.ClimberWithJoystick;
+import com.team5959.commands.ShooterPIDCmd;
+import com.team5959.commands.ShooterStopCmd;
 import com.team5959.commands.SwerveDriveJoystickCmd;
 import com.team5959.commands.SwerveDriveXLockCmd;
 
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -36,13 +41,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
 
-  public Alert noAutoSelected = new Alert("***ADVERTENCIA***            No has selecciono modo autonomo", Alert.AlertType.kWarning); // Alerta de advertencia para autónomo no seleccionado
+  public Alert noAutoSelected = new Alert("***ADVERTENCIA***            No has selecciono modo autonomo",
+      Alert.AlertType.kWarning); // Alerta de advertencia para autónomo no seleccionado
 
   // Selector de comando autónomo
   private final SendableChooser<Command> autoChooser;
   // Creacion de objetos de SUBSISTEMAS
   private final SwerveChassis swerveChassis = new SwerveChassis();
-   private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter();
+  private final Climber climber = new Climber();
 
   // Creacion de objetos de CONTROLES
   private final PS4Controller control = new PS4Controller(ControllerConstants.kDriverControllerPort);
@@ -55,17 +62,21 @@ public class RobotContainer {
   private final JoystickButton IntakeINButton = new JoystickButton(control, 6);
   private final JoystickButton IntakeOUTButton = new JoystickButton(control, 5);
 
-  public RobotContainer() {    
+  private final JoystickButton climberUpButton = new JoystickButton(control, 8);
+  private final JoystickButton climberDownButton = new JoystickButton(control, 7);
+
+  private final JoystickButton climberStartPosition = new JoystickButton(control, 2);
+  private final JoystickButton climberL1Position = new JoystickButton(control, 3);
+  private final JoystickButton climberL2Position = new JoystickButton(control, 4);
+  private final JoystickButton climberL3Position = new JoystickButton(control, 1);
+
+  public RobotContainer() {
 
     // Registro de comandos nombrados para pathplanner
-    NamedCommands.registerCommand("runIntakeCmd", Commands.print("Enciendo intake"));
-    NamedCommands.registerCommand("offtakeCmd", Commands.print("Apagando Intake"));
-    NamedCommands.registerCommand("scorereef", Commands.runOnce(() -> {
-      System.out.println("Anotando en Reef");
-    }));
-    NamedCommands.registerCommand("getcoral", Commands.runOnce(() -> {
-      System.out.println("Solicitando coral");
-    }));
+    NamedCommands.registerCommand("runIntakeCmd", new ClimberPID(climber, 100));
+    NamedCommands.registerCommand("offtakeCmd", new ShooterStopCmd(shooter));
+    NamedCommands.registerCommand("scorereef", new ShooterPIDCmd(shooter, -3000 ).withTimeout(0.4));
+    NamedCommands.registerCommand("getcoral", new ShooterPIDCmd(shooter, 3000 ).withTimeout(1));
 
     // Registro de triggers de pathplanner
     new EventTrigger("Prepareforscore").onTrue(Commands.runOnce(() -> {
@@ -108,7 +119,7 @@ public class RobotContainer {
             : stream);
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
+    //SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
 
     // Configurar los comandos predeterminados de los subsistemas. En este caso, el
     // chasis swerve
@@ -117,6 +128,9 @@ public class RobotContainer {
         () -> control.getLeftX(),
         () -> control.getRightX(),
         true));
+
+        climber.setDefaultCommand(new ClimberHoldPosition(climber));
+
 
     // Configure the trigger bindings method.
     configureBindings();
@@ -148,19 +162,26 @@ public class RobotContainer {
 
     lockPositionButton.whileTrue(new SwerveDriveXLockCmd(swerveChassis));
 
-    IntakeINButton.onTrue(new ShooterPID(shooter, 3000)); // mientras presionado
-    IntakeINButton.onFalse(new ShooterStop(shooter));        // al soltar
-    IntakeOUTButton.onTrue(new ShooterPID(shooter, -3000)); // mientras presionado
-    IntakeOUTButton.onFalse(new ShooterStop(shooter));        // al soltar
+    IntakeINButton.onTrue(new ShooterPIDCmd(shooter, 3000)); // mientras presionado
+    IntakeINButton.onFalse(new ShooterStopCmd(shooter)); // al soltar
+    IntakeOUTButton.onTrue(new ShooterPIDCmd(shooter, -3000)); // mientras presionado
+    IntakeOUTButton.onFalse(new ShooterStopCmd(shooter)); // al soltar
+
+
+     climberUpButton.whileTrue(new ClimberWithJoystick(climber, 0.5));
+     climberDownButton.whileTrue(new ClimberWithJoystick(climber, -0.5));
+
+    climberStartPosition.onTrue(new ClimberPID(climber, 0));
+    climberL1Position.onTrue(new ClimberPID(climber, 50));
+    climberL2Position.onTrue(new ClimberPID(climber, 100));
+    climberL3Position.onTrue(new ClimberPID(climber, 150));
 
 
   }
 
   public void periodic() {
 
-    
   }
-
 
   public Command getAutonomousCommand() {
 
