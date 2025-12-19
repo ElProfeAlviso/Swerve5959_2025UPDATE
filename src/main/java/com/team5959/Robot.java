@@ -7,12 +7,12 @@ package com.team5959; //Paquete donde se encuentra este proyecto.
 import edu.wpi.first.math.geometry.Rotation2d;
 // Importa la clase TimedRobot, que proporciona la estructura básica para un robot basado en tiempo.
 import edu.wpi.first.wpilibj.TimedRobot;
-
 // Importa la interfaz Command, que representa una acción o tarea que puede ser programada y ejecutada.
 import edu.wpi.first.wpilibj2.command.Command;
 
 // Importa la clase CommandScheduler, que se encarga de gestionar la ejecución de comandos.
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 
 /**
  * La máquina virtual está configurada para ejecutar automáticamente esta clase,
@@ -56,6 +56,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+       
+    if (m_autonomousCommand.getName().equals("InstantCommand")) {
+      m_robotContainer.noAutoSelected.set(true);   
+      } else {
+      m_robotContainer.noAutoSelected.set(false);
+    }
+
     // Ejecuta el Scheduler. Esto es responsable de consultar botones, agregar
     // comandos recién programados,
     // ejecutar comandos ya programados, eliminar comandos terminados o

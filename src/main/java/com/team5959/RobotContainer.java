@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,10 +21,14 @@ import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.events.PointTowardsZoneTrigger;
 
 import com.team5959.Constants.ControllerConstants;
+import com.team5959.subsystems.Shooter;
 import com.team5959.subsystems.SwerveChassis;
-
+import com.team5959.commands.ShooterPID;
+import com.team5959.commands.ShooterStop;
 import com.team5959.commands.SwerveDriveJoystickCmd;
 import com.team5959.commands.SwerveDriveXLockCmd;
+
+import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.PS4Controller;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -31,10 +36,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
 
+  public Alert noAutoSelected = new Alert("***ADVERTENCIA***            No has selecciono modo autonomo", Alert.AlertType.kWarning); // Alerta de advertencia para autónomo no seleccionado
+
   // Selector de comando autónomo
   private final SendableChooser<Command> autoChooser;
   // Creacion de objetos de SUBSISTEMAS
   private final SwerveChassis swerveChassis = new SwerveChassis();
+   private final Shooter shooter = new Shooter();
 
   // Creacion de objetos de CONTROLES
   private final PS4Controller control = new PS4Controller(ControllerConstants.kDriverControllerPort);
@@ -44,7 +52,10 @@ public class RobotContainer {
   private final JoystickButton resetNavxButton = new JoystickButton(control, 10);
   private final JoystickButton lockPositionButton = new JoystickButton(control, 14);
 
-  public RobotContainer() {
+  private final JoystickButton IntakeINButton = new JoystickButton(control, 6);
+  private final JoystickButton IntakeOUTButton = new JoystickButton(control, 5);
+
+  public RobotContainer() {    
 
     // Registro de comandos nombrados para pathplanner
     NamedCommands.registerCommand("runIntakeCmd", Commands.print("Enciendo intake"));
@@ -97,7 +108,7 @@ public class RobotContainer {
             : stream);
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    SmartDashboard.putData("Command Scheduler", edu.wpi.first.wpilibj2.command.CommandScheduler.getInstance());
+    SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
 
     // Configurar los comandos predeterminados de los subsistemas. En este caso, el
     // chasis swerve
@@ -137,11 +148,19 @@ public class RobotContainer {
 
     lockPositionButton.whileTrue(new SwerveDriveXLockCmd(swerveChassis));
 
+    IntakeINButton.onTrue(new ShooterPID(shooter, 3000)); // mientras presionado
+    IntakeINButton.onFalse(new ShooterStop(shooter));        // al soltar
+    IntakeOUTButton.onTrue(new ShooterPID(shooter, -3000)); // mientras presionado
+    IntakeOUTButton.onFalse(new ShooterStop(shooter));        // al soltar
+
+
   }
 
   public void periodic() {
 
+    
   }
+
 
   public Command getAutonomousCommand() {
 
